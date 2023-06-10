@@ -5,6 +5,7 @@ import { Canvas } from "../engine/system/Canvas"
 import { GameObject } from "../engine/system/GameObject"
 import { Input } from "../engine/system/Input"
 import { Vector2 } from "../engine/utils/Vector2"
+import { SoundManager } from "./SoundManager"
 
 const PLAYER_LEFT = 'assets/images/lik-left.png'
 const MOVE_SPEED = 2
@@ -63,6 +64,7 @@ export class Player extends GameObject{
 
     private jump():void{
         this.rigidBody.addForce(new Vector2(0, JUMP_FORCE), ForceMode.VelocityChange)
+        SoundManager.playJumpSound()
     }
 
     public OnTriggerStay = (collider: Collider) =>{

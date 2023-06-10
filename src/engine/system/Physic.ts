@@ -33,7 +33,8 @@ export class Physic {
     public static update() {
         for (let i = 0; i < Physic.colliders.length - 1; i++) {
             for (let j = i + 1; j < Physic.colliders.length; j++) {
-                if (this.checkInteractiveLayer(Physic.colliders[i].gameObject.layer, Physic.colliders[j].gameObject.layer) &&
+                if (Physic.colliders[i].gameObject.active && Physic.colliders[j].gameObject.active &&
+                    this.checkInteractiveLayer(Physic.colliders[i].gameObject.layer, Physic.colliders[j].gameObject.layer) &&
                     this.checkCollider(Physic.colliders[i], Physic.colliders[j])) {
                     Physic.colliders[i].colliding(Physic.colliders[j])
                     Physic.colliders[j].colliding(Physic.colliders[i])

@@ -11,10 +11,6 @@ import { GameObject } from "./engine/system/GameObject"
 const FRAME_RATE = 300
 
 export class Game {
-    private static gameState: GameState
-    // private gameOver: GameOver
-    // private message: Message
-    // private playAgainButton: PlayAgainButton
 
     private static gameObjects: GameObject[] = []
 
@@ -53,6 +49,15 @@ export class Game {
     
     public static registerGameObject(gameObject: GameObject): void {
         Game.gameObjects.push(gameObject)
+    }
+
+    public static Find(gameObjectName: string) : GameObject | null{
+        for (let i = 0; i < Game.gameObjects.length; i++) {
+            if (Game.gameObjects[i].name == gameObjectName) {
+                return Game.gameObjects[i]
+            }
+        }
+        return null
     }
 }
 

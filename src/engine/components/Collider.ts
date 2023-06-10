@@ -30,10 +30,11 @@ export class Collider extends Component {
     }
 
     public colliding(collider: Collider) {
+        if (!collider.gameObject.active) return
+
         if (this.isTrigger) {
             this.OnTriggerStay.invoke(collider)
         } else {
-
             const thisRb = this.gameObject.getComponent('RigidBody') as RigidBody
             if (!thisRb) return
 
