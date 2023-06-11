@@ -29,4 +29,8 @@ export class Enviroment extends GameObject{
             this.rigidBody.velocity = new Vector2(0, -this.playerRb.velocity.y)
         }
     }
+
+    public point(): number{
+        return this.transform.position.y / 1.5
+    }
 }

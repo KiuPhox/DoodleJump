@@ -31,6 +31,10 @@ export class Vector2 {
         return new Vector2(-1, 0)
     }
 
+    static get right(): Vector2{
+        return new Vector2(1, 0)
+    }
+
     get x(): number { return this._x }
 
     get y(): number { return this._y }

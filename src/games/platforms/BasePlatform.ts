@@ -3,15 +3,21 @@ import { Sprite } from "../../engine/components/Sprite"
 import { GameObject } from "../../engine/system/GameObject"
 
 export class BasePlatform extends GameObject{
+    protected sprite: Sprite
+
     constructor(){
         super('Platform')
 
         const collider = new Collider(this)
 
-        const sprite = new Sprite(this, 2)
-        sprite.setSprite('/assets/images/green-ground.png')
+        this.sprite = new Sprite(this, 2)
+        this.sprite.setSprite('/assets/images/green-platform.png')
 
-        this.addComponent(sprite)
+        this.addComponent(this.sprite)
         this.addComponent(collider)
+    }
+
+    public addAdditionalObject(gameObject: GameObject): void {
+        //
     }
 }

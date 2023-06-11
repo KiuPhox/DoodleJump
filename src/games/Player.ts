@@ -68,7 +68,7 @@ export class Player extends GameObject{
     }
 
     public OnTriggerStay = (collider: Collider) =>{
-        if (collider.gameObject.name === 'Platform' && this.isFalling){
+        if ((collider.gameObject.name === 'Platform' || collider.gameObject.name === 'BluePlatform') && this.isFalling){
             const playerBottom = this.transform.position.y + this.collider.size.y / 2
             const platformTop = collider.gameObject.transform.position.y 
 

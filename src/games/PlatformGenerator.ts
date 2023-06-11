@@ -6,18 +6,20 @@ import { Utils } from "../engine/utils/Utils"
 import { Vector2 } from "../engine/utils/Vector2"
 import { Game } from "../game"
 import { Enviroment } from "./Enviroment"
+import { Level } from "./Level"
 import { Player } from "./Player"
 import { BasePlatform } from "./platforms/BasePlatform"
-
-const SPAWN_DISTANCE_RANGE = new Vector2(20, 50)
+import { BluePlatform } from "./platforms/BluePlatform"
 
 export class PlatformGenerator extends GameObject{
     private enviroment: Enviroment
     private player: Player
 
     private platforms: BasePlatform[]
-    private platformsPools: ObjectPool<BasePlatform>
     private platformSprite: Sprite
+
+    private basePlatformsPools: ObjectPool<BasePlatform>
+    private bluePlatformsPools: ObjectPool<BluePlatform>
 
     private previousPlatformGenerated: BasePlatform
     private maxDistance: number
@@ -33,7 +35,7 @@ export class PlatformGenerator extends GameObject{
         this.player = Game.Find('Player') as Player
 
         // Define platform pool
-        this.platformsPools = new ObjectPool<BasePlatform>(
+        this.basePlatformsPools = new ObjectPool<BasePlatform>(
             () => {
                 const platform = new BasePlatform()
                 platform.parent = this.enviroment
@@ -44,14 +46,25 @@ export class PlatformGenerator extends GameObject{
             (obj) => { obj.setActive(false)}
         )
 
+        this.bluePlatformsPools = new ObjectPool<BluePlatform>(
+            () => {
+                const platform = new BluePlatform()
+                platform.parent = this.enviroment
+                this.platforms.push(platform)
+                return platform
+            },
+            (obj) =>{ obj.setActive(true)},
+            (obj) => { obj.setActive(false)}
+        )
+
         // Initial Platforms
-        const firstPlatform = this.platformsPools.get()
+        const firstPlatform = this.basePlatformsPools.get()
         firstPlatform.transform.position = new Vector2(0, 200)
         this.platformSprite = (firstPlatform.getComponent('Sprite') as Sprite)
         this.previousPlatformGenerated = firstPlatform
 
         for (let i = 0; i < 20; i++){
-            this.spawn()
+            this.spawn(0)
         }
         // Distance between player and the last platform
         this.maxDistance = this.player.transform.position.y - this.previousPlatformGenerated.transform.position.y
@@ -61,36 +74,65 @@ export class PlatformGenerator extends GameObject{
 
     public update(): void {
         super.update()
-        console.log(this.platforms.length)
+
         for (let i = 0; i < this.platforms.length; i++) {
             if (this.platforms[i].active && 
                 this.platforms[i].transform.position.y - this.platformSprite.height / 2 > Canvas.size.y / 2){
-                this.platformsPools.release(this.platforms[i])
+                this.basePlatformsPools.release(this.platforms[i])
             }
         }
 
+        let currentLevel = Math.floor(this.enviroment.point() / 1000)
+        if (currentLevel > Level.scoreToPlatfomSpawnDistances.length - 1){
+            currentLevel = Level.scoreToPlatfomSpawnDistances.length - 1
+        }
+        console.log(this.enviroment.point())
+
         if (this.isInitialGenerated && 
             this.player.transform.position.y - this.maxDistance < 
-            this.previousPlatformGenerated.transform.position.y -
-            Utils.RandomFloat(SPAWN_DISTANCE_RANGE.x, SPAWN_DISTANCE_RANGE.y)){
-                this.spawn()
+            this.previousPlatformGenerated.transform.position.y){
+                this.spawn(currentLevel)
             }
 
     }
 
-    public spawn(): void{
-        const platform = this.platformsPools.get()
+    public spawn(currentLevel: number): void{
+        let platform = null
+
+        // Choose platform type to spawn
+        let typeLevel = currentLevel
+        if (typeLevel > Level.scoreToPlatformTypeSpawn.length - 1)
+            typeLevel = Level.scoreToPlatformTypeSpawn.length - 1
+
+
+        switch (Utils.WeightPick(Level.scoreToPlatformTypeSpawn[typeLevel])){
+            case 0:
+                platform = this.basePlatformsPools.get()
+                break
+            case 1:
+                platform = this.bluePlatformsPools.get()
+                break
+            case 2:
+                platform = this.bluePlatformsPools.get()
+                break
+            default:
+                platform = this.basePlatformsPools.get()
+                break
+        }
 
         // Generate a platform with a distance from the previously spawned one
         platform.transform.position = new Vector2(
             Utils.RandomFloat(-Canvas.size.x / 2, Canvas.size.x / 2),
             this.previousPlatformGenerated.transform.position.y - 
-            Utils.RandomFloat(SPAWN_DISTANCE_RANGE.x, SPAWN_DISTANCE_RANGE.y)
+            Utils.RandomFloat(
+                Level.scoreToPlatfomSpawnDistances[currentLevel].x, 
+                Level.scoreToPlatfomSpawnDistances[currentLevel].y
+                )
         )
 
-        this.previousPlatformGenerated = platform
-                
         
+
+        this.previousPlatformGenerated = platform
     }
 
 
