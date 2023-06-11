@@ -6,7 +6,7 @@ import Background from "./Background"
 import { Player } from "./Player"
 import { Enviroment } from "./Enviroment"
 import { TopBar } from "./TopBar"
-import { PlatformManager } from "./PlatformSpawner"
+import { PlatformGenerator } from "./PlatformGenerator"
 
 export class GameManager {
     private static gameState: GameState
@@ -26,7 +26,7 @@ export class GameManager {
 
         new Enviroment(player)
 
-        new PlatformManager()
+        new PlatformGenerator()
 
 
         // for (let i = 0; i < 200; i++){

@@ -13,18 +13,21 @@ export class ObjectPool<T> {
     }
 
     public get(): T {
-        if (this.pool.length > 0) {
-            const p = this.pool.pop() as T
-            this.getObject(p)
-            return p
+        let p = null
+        if (this.pool.length === 0) {
+            p = this.createObject()
         } else {
-            return this.createObject()
+            p = this.pool.pop() as T
         }
+        this.getObject(p)
+        return p
     }
 
     public release(obj: T): void {
-        this.resetObject(obj)
-        this.pool.push(obj)
+        if (this.pool.indexOf(obj) === -1) {
+            this.resetObject(obj)
+            this.pool.push(obj)
+        }
     }
 
     public clear(): void {
