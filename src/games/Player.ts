@@ -6,6 +6,8 @@ import { GameObject } from "../engine/system/GameObject"
 import { Input } from "../engine/system/Input"
 import { Vector2 } from "../engine/utils/Vector2"
 import { SoundManager } from "./SoundManager"
+import { BasePlatform } from "./platforms/BasePlatform"
+import { BrownPlatform } from "./platforms/BrownPlatform"
 
 const PLAYER_LEFT = 'assets/images/lik-left.png'
 const MOVE_SPEED = 2
@@ -68,13 +70,21 @@ export class Player extends GameObject{
     }
 
     public OnTriggerStay = (collider: Collider) =>{
-        if ((collider.gameObject.name === 'Platform' || collider.gameObject.name === 'BluePlatform') && this.isFalling){
+        if ((collider.gameObject instanceof BasePlatform) && this.isFalling){
             const playerBottom = this.transform.position.y + this.collider.size.y / 2
             const platformTop = collider.gameObject.transform.position.y 
 
             if (playerBottom >= platformTop) return
 
-            this.jump()
+            if (collider.gameObject.name == 'BrownPlatform')
+            {
+                (collider.gameObject as BrownPlatform).setIsBreaking(true)
+            }
+            else
+            {
+                this.jump()
+            }
+
         }
     }
 

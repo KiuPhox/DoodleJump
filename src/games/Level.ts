@@ -22,8 +22,8 @@ export class Level {
 
     // Platforms: BasePlatform, BrownPlatform, BluePlatform
     public static scoreToPlatformTypeSpawn: number[][] = [
-        [100, 0, 0],
+        [90, 10, 0],
         [85, 10, 5],
-        [20, 60, 10]
+        [50, 10, 40]
     ]
 }

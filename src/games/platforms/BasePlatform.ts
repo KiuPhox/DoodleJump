@@ -9,6 +9,7 @@ export class BasePlatform extends GameObject{
         super('Platform')
 
         const collider = new Collider(this)
+        collider.isTrigger = true
 
         this.sprite = new Sprite(this, 2)
         this.sprite.setSprite('/assets/images/green-platform.png')
@@ -18,6 +19,6 @@ export class BasePlatform extends GameObject{
     }
 
     public addAdditionalObject(gameObject: GameObject): void {
-        //
+        //  
     }
 }
