@@ -15,7 +15,6 @@ export class SoundManager{
     private static fallingAudio: HTMLAudioElement
 
     public static init():void{
-
         this.hatAudio = new Audio(HAT_AUDIO_PATH)
         this.jetpackAudio = new Audio(JETPACK_AUDIO_PATH)
         this.fallingAudio = new Audio(FALLING_AUDIO_PATH)

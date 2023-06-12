@@ -103,35 +103,30 @@ export class PlatformGenerator extends GameObject{
             }
         }
 
-        let currentLevel = Math.floor(this.enviroment.point() / 1000)
-        if (currentLevel > Level.scoreToPlatfomSpawnDistances.length - 1){
-            currentLevel = Level.scoreToPlatfomSpawnDistances.length - 1
-        }
+        const currentScore = Math.floor(this.enviroment.point())
+        console.log(currentScore)
 
         if (this.isInitialGenerated && 
             this.player.transform.position.y - this.maxDistance < 
             this.previousPlatformGenerated.transform.position.y){
-                this.spawn(currentLevel)
+                this.spawn(currentScore)
             }
 
     }
 
-    public spawn(currentLevel: number): void{
+    public spawn(currentScore: number): void{
         let platform = null
 
         // Choose platform type to spawn
-        let typeLevel = currentLevel
-        if (typeLevel > Level.scoreToPlatformTypeSpawn.length - 1)
-            typeLevel = Level.scoreToPlatformTypeSpawn.length - 1
 
-        switch (Utils.WeightPick(Level.scoreToPlatformTypeSpawn[typeLevel])){
+        switch (Utils.WeightPick(Level.getPlaformTypes(currentScore))){
             case 0:
                 platform = this.basePlatformsPools.get()
                 this.addPowerUp(platform)
                 break
             case 1:
                 platform = PlatformGenerator.brownPlatformsPools.get()
-                this.setPlatformPosition(this.basePlatformsPools.get(), currentLevel)
+                this.setPlatformPosition(this.basePlatformsPools.get(), currentScore)
                 break
             case 2:
                 platform = this.bluePlatformsPools.get()
@@ -145,7 +140,7 @@ export class PlatformGenerator extends GameObject{
                 break
         }
 
-        this.setPlatformPosition(platform, currentLevel)
+        this.setPlatformPosition(platform, currentScore)
         this.previousPlatformGenerated = platform
     }
 
@@ -177,6 +172,9 @@ export class PlatformGenerator extends GameObject{
             case 'BrownPlatform':
                 PlatformGenerator.brownPlatformsPools.release(platform as BrownPlatform)
                 break
+            case 'WhitePlatform':
+                PlatformGenerator.whitePlatformsPools.release(platform as WhitePlatform)
+                break
         }
     }
 
@@ -186,8 +184,8 @@ export class PlatformGenerator extends GameObject{
             Utils.RandomFloat(-Canvas.size.x / 2 + 20, Canvas.size.x / 2 - 20),
             this.previousPlatformGenerated.transform.position.y - 
             Utils.RandomFloat(
-                Level.scoreToPlatfomSpawnDistances[currentLevel].x,
-                Level.scoreToPlatfomSpawnDistances[currentLevel].y
+                Level.getPlatfomSpawnDistances(currentLevel).x,
+                Level.getPlatfomSpawnDistances(currentLevel).y
                 )
         )
     }

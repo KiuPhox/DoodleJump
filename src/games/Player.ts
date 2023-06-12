@@ -13,6 +13,7 @@ import { Time } from "../engine/system/Time"
 import { GameManager } from "./GameManager"
 import { GameState } from "./GameState"
 import { PlatformGenerator } from "./PlatformGenerator"
+import { WhitePlatform } from "./platforms/WhitePlatform"
 
 const PLAYER_LEFT = 'assets/images/lik-left.png'
 const MOVE_SPEED = 2
@@ -118,7 +119,7 @@ export class Player extends GameObject{
                 this.jump(JUMP_FORCE)
             
                 if (collider.gameObject.name == 'WhitePlatform'){
-                    PlatformGenerator.whitePlatformsPools.release(collider.gameObject)
+                    PlatformGenerator.whitePlatformsPools.release(collider.gameObject as WhitePlatform)
                     SoundManager.playWhiteSound()
                 }
                 else
