@@ -7,7 +7,7 @@ export class Tween {
     private target: any
     private duration: number
     private easing: Ease
-    private onCompleteCallback: TweenCallback
+    private onCompleteCallback: TweenCallback | null
     private startTime: number
     private properties: { [key: string]: { start: number, delta: number } }
   
@@ -74,6 +74,6 @@ export class Tween {
           }
         }
     
-        this.onCompleteCallback()
+        this.onCompleteCallback?.call(this.onCompleteCallback)
     }
 }
