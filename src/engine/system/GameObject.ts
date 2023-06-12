@@ -68,6 +68,10 @@ export class GameObject {
         childNode.parent = this
     }
 
+    public removeChild(childNode: GameObject){
+        if (!this.children.includes(childNode)) return
+        this.children.splice(this.children.indexOf(childNode), 1)
+    }
     public setParent(parentNode: GameObject) {
         parentNode.setChild(this)
     }
@@ -85,5 +89,20 @@ export class GameObject {
     public onDisabled(): void { /**/ }
     public OnCollisionStay(collider: Collider): void { collider }
     public OnTriggerStay(collider: Collider): void { collider }
+
+    public destroy(): void {
+        // Remove the GameObject from its parent (if any)
+        if (this.parent) {
+            this.parent.removeChild(this)
+        }
+
+        // Destroy all child GameObjects
+        for (const child of this.children) {
+            child.destroy()
+        }
+
+        // Unregister the GameObject from the Game
+        Game.unregisterGameObject(this)
+    }
 
 }

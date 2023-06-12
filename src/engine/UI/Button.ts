@@ -3,7 +3,7 @@ import { GameObject } from "../system/GameObject"
 import { UIManager } from "./UIManager"
 
 export abstract class Button extends GameObject {
-    private sprite: Sprite
+    protected sprite: Sprite
 
     constructor(name: string, src: string) {
         super(name)

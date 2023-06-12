@@ -7,6 +7,8 @@ import { Input } from "./engine/system/Input"
 import { Layer } from "./engine/system/Layer"
 import { GameState } from "./games/GameState"
 import { GameObject } from "./engine/system/GameObject"
+import { SoundManager } from "./games/SoundManager"
+import { TweenManager } from "./engine/system/Tween/TweenManager"
 
 const FRAME_RATE = 300
 
@@ -20,6 +22,8 @@ export class Game {
         UIManager.init()
         Canvas.init('game')
         Layer.init()
+        SoundManager.init()
+        TweenManager.init()
 
         GameManager.init()
         GameManager.updateGameState(GameState.Ready)
@@ -31,6 +35,7 @@ export class Game {
         if (Time.deltaTime >= 1 / FRAME_RATE) {
             Physic.update() // Physic
             Game.update() // Update
+            TweenManager.update()
             Canvas.draw() // Render
             Input.reset() // Reset input
             Time.lastFrameTime = window.performance.now()
@@ -49,6 +54,10 @@ export class Game {
     
     public static registerGameObject(gameObject: GameObject): void {
         Game.gameObjects.push(gameObject)
+    }
+
+    public static unregisterGameObject(gameObject: GameObject): void{
+        Game.gameObjects.slice(Game.gameObjects.indexOf(gameObject), 1)
     }
 
     public static Find(gameObjectName: string) : GameObject | null{

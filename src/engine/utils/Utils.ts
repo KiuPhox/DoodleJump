@@ -11,6 +11,11 @@ export class Utils {
         return this.RandomFloat(0, 100) <= percent
     }
 
+    public static Lerp(start: number, end: number, t: number): number {
+        t = Math.max(0, Math.min(1, t))
+        return start + (end - start) * t
+    }
+
     public static WeightPick(weights: number[]) : number
     {
         let accumlateWeights = 0

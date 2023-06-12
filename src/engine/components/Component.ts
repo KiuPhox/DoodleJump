@@ -11,4 +11,8 @@ export class Component {
     update() {
         // Update
     }
+
+    destroy() {
+        // Destroy
+    }
 }

@@ -9,7 +9,7 @@ export class BasePlatform extends GameObject{
     private powerUp: GameObject
 
     constructor(){
-        super('Platform')
+        super('BasePlatform')
 
         const collider = new Collider(this)
         collider.isTrigger = true
@@ -23,13 +23,14 @@ export class BasePlatform extends GameObject{
 
     public addPowerUp(gameObject: GameObject): void {
         this.setChild(gameObject)
-        this.powerUp = gameObject
+        
         const sprite = gameObject.getComponent('Sprite') as Sprite
 
         gameObject.transform.localPosition = new Vector2(
             Utils.RandomFloat(-this.sprite.width / 2 + sprite.width / 2, this.sprite.width / 2 - sprite.width / 2),
             - this.sprite.height / 2 - sprite.height / 2 + 2
         )
+        this.powerUp = gameObject
     }
 
     public onDisabled = () => {

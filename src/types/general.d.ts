@@ -1,1 +1,1 @@
-export type GameState = "Idle" | "Start" | "GameOver"
+type TweenCallback = () => void

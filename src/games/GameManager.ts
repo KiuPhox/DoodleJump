@@ -7,11 +7,15 @@ import { Player } from "./Player"
 import { Enviroment } from "./Enviroment"
 import { TopBar } from "./TopBar"
 import { PlatformGenerator } from "./PlatformGenerator"
+import { PlayButton } from "./ui/PlayButton"
+import { BlackImage } from "./ui/BlackImage"
 
 export class GameManager {
     private static gameState: GameState
 
     public static OnGameStateChanged: Event<GameState>
+
+    private static blackImage: BlackImage
 
     public static init(){
         // Physic setup
@@ -28,12 +32,17 @@ export class GameManager {
 
         new PlatformGenerator()
 
+        new PlayButton()
+
+        this.blackImage = new BlackImage()
+
 
         // for (let i = 0; i < 200; i++){
         //     const platform = new BasePlatform()
         //     platform.transform.position = new Vector2(Utils.RandomFloat(-150, 150), Utils.RandomFloat(-5000, 300))
         //     platform.parent = enviroment
         // }
+        this.updateGameState(GameState.Ready)
     }
 
     public static updateGameState(gameState: GameState): void {
@@ -43,6 +52,7 @@ export class GameManager {
             case GameState.Ready:
                 break
             case GameState.Playing:
+                this.blackImage.show(1)
                 break
             case GameState.GameOver:
                 break
