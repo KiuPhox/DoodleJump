@@ -5,10 +5,10 @@ import { GameState } from "./GameState"
 import Background from "./Background"
 import { Player } from "./Player"
 import { Enviroment } from "./Enviroment"
-import { TopBar } from "./TopBar"
+import { TopBar } from "./ui/TopBar"
 import { PlatformGenerator } from "./PlatformGenerator"
-import { PlayButton } from "./ui/PlayButton"
 import { BlackImage } from "./ui/BlackImage"
+import { MainMenu } from "./ui/MainMenu"
 
 export class GameManager {
     private static gameState: GameState
@@ -32,7 +32,7 @@ export class GameManager {
 
         new PlatformGenerator()
 
-        new PlayButton()
+        new MainMenu()
 
         this.blackImage = new BlackImage()
 
@@ -52,7 +52,6 @@ export class GameManager {
             case GameState.Ready:
                 break
             case GameState.Playing:
-                this.blackImage.show(1)
                 break
             case GameState.GameOver:
                 break

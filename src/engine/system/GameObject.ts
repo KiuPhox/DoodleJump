@@ -78,6 +78,7 @@ export class GameObject {
 
     public setActive(value: boolean): void {
         this.isActive = value
+
         if (this.active) this.onEnabled()
         else (this.onDisabled())
     }

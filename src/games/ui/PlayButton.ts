@@ -12,6 +12,6 @@ export class PlayButton extends Button{
 
     onClick(): void {
         this.sprite.setSprite(PLAY_ON_IMAGE_PATH);
-        (Game.Find('BlackImage') as BlackImage).show(1)
+        (Game.Find('BlackImage') as BlackImage).show()
     }
 }

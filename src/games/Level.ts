@@ -20,10 +20,11 @@ export class Level {
         new Vector2(40, 120)
     ]
 
-    // Platforms: BasePlatform, BrownPlatform, BluePlatform
+    // Platforms: BasePlatform, BrownPlatform, BluePlatform, WhitePlatform
     public static scoreToPlatformTypeSpawn: number[][] = [
-        [90, 10, 0], // 0m
-        [85, 10, 5], // 1000m
-        [50, 10, 40]
+        [90, 10, 0, 0], // 0m
+        [85, 10, 5, 0], // 1000m
+        [50, 10, 40, 10],
+        [50, 10, 10, 30]
     ]
 }

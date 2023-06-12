@@ -16,6 +16,9 @@ import { Hat } from "./powerup/Hat"
 import { Jetpack } from "./powerup/Jetpack"
 import { GameState } from "./GameState"
 import { GameManager } from "./GameManager"
+import { WhitePlatform } from "./platforms/WhitePlatform"
+
+const INITIAL_PLATFORMS_COUNT = 20
 
 export class PlatformGenerator extends GameObject{
     private enviroment: Enviroment
@@ -27,6 +30,7 @@ export class PlatformGenerator extends GameObject{
     private basePlatformsPools: ObjectPool<BasePlatform>
     private bluePlatformsPools: ObjectPool<BluePlatform>
     public static brownPlatformsPools: ObjectPool<BrownPlatform>
+    public static whitePlatformsPools: ObjectPool<WhitePlatform>
 
     private previousPlatformGenerated: BasePlatform
     private maxDistance: number
@@ -67,6 +71,17 @@ export class PlatformGenerator extends GameObject{
         PlatformGenerator.brownPlatformsPools= new ObjectPool<BrownPlatform>(
             () => {
                 const platform = new BrownPlatform()
+                platform.parent = this.enviroment
+                this.platforms.push(platform)
+                return platform
+            },
+            (obj) =>{ obj.setActive(true)},
+            (obj) => { obj.setActive(false)}
+        )
+
+        PlatformGenerator.whitePlatformsPools= new ObjectPool<WhitePlatform>(
+            () => {
+                const platform = new WhitePlatform()
                 platform.parent = this.enviroment
                 this.platforms.push(platform)
                 return platform
@@ -122,6 +137,9 @@ export class PlatformGenerator extends GameObject{
                 platform = this.bluePlatformsPools.get()
                 this.addPowerUp(platform)
                 break
+            case 3:
+                platform = PlatformGenerator.whitePlatformsPools.get()
+                break
             default:
                 platform = this.basePlatformsPools.get()
                 break
@@ -132,6 +150,7 @@ export class PlatformGenerator extends GameObject{
     }
 
     private addPowerUp(platform: BasePlatform){
+        if (this.platforms.length > INITIAL_PLATFORMS_COUNT)
         if (Utils.RandomPercent(10)){
             switch (Utils.WeightPick(Level.powerUpSpawnChances)){
                 case 0:
@@ -191,7 +210,7 @@ export class PlatformGenerator extends GameObject{
         this.platformSprite = (firstPlatform.getComponent('Sprite') as Sprite)
         this.previousPlatformGenerated = firstPlatform
 
-        for (let i = 0; i < 20; i++){
+        for (let i = 0; i < INITIAL_PLATFORMS_COUNT; i++){
             this.spawn(0)
         }
         // Distance between player and the last platform

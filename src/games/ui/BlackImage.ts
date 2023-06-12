@@ -1,7 +1,6 @@
 import { Sprite } from "../../engine/components/Sprite"
 import { GameObject } from "../../engine/system/GameObject"
 import { Tween } from "../../engine/system/Tween/Tween"
-import { Game } from "../../game"
 import { GameManager } from "../GameManager"
 import { GameState } from "../GameState"
 
@@ -31,11 +30,10 @@ export class BlackImage extends GameObject {
         super.update()
     }
 
-    public show(targetAlpha: number): void{
+    public show(): void{
         if (this.fadeTween) return
         this.fadeTween = new Tween(this.sprite, FADE_DURATION).to({'alpha': 1}).onComplete(()=>{
             GameManager.updateGameState(GameState.Playing)
-            Game.Find('PlayButton')?.setActive(false)
             new Tween(this.sprite, 0).to({'alpha': 0})
         })
     }

@@ -12,6 +12,7 @@ import { BrownPlatform } from "./platforms/BrownPlatform"
 import { Time } from "../engine/system/Time"
 import { GameManager } from "./GameManager"
 import { GameState } from "./GameState"
+import { PlatformGenerator } from "./PlatformGenerator"
 
 const PLAYER_LEFT = 'assets/images/lik-left.png'
 const MOVE_SPEED = 2
@@ -87,7 +88,7 @@ export class Player extends GameObject{
             this.transform.position = new Vector2(-Canvas.size.x / 2 - this.sprite.width / 2, this.transform.position.y)
         }
 
-        if (this.transform.position.y + this.sprite.height / 2 > Canvas.size.y / 2){
+        if (this.transform.position.y - this.sprite.height / 2 > Canvas.size.y / 2){
             if (GameManager.getGameState() === GameState.Playing || GameManager.getGameState() === GameState.Ready){
                 GameManager.updateGameState(GameState.GameOver)
                 SoundManager.playGameOverSound()
@@ -115,7 +116,15 @@ export class Player extends GameObject{
             else
             {
                 this.jump(JUMP_FORCE)
-                SoundManager.playJumpSound()
+            
+                if (collider.gameObject.name == 'WhitePlatform'){
+                    PlatformGenerator.whitePlatformsPools.release(collider.gameObject)
+                    SoundManager.playWhiteSound()
+                }
+                else
+                {
+                    SoundManager.playJumpSound()
+                }
             }
         }
         else if (collider.gameObject.name === 'Spring' && this.isFalling){
