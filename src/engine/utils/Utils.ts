@@ -7,6 +7,10 @@ export class Utils {
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
+    public static RandomPercent(percent: number): boolean {
+        return this.RandomFloat(0, 100) <= percent
+    }
+
     public static WeightPick(weights: number[]) : number
     {
         let accumlateWeights = 0

@@ -6,12 +6,15 @@ import { GameObject } from "../engine/system/GameObject"
 import { Input } from "../engine/system/Input"
 import { Vector2 } from "../engine/utils/Vector2"
 import { SoundManager } from "./SoundManager"
+import { Spring } from "./powerup/Spring"
 import { BasePlatform } from "./platforms/BasePlatform"
 import { BrownPlatform } from "./platforms/BrownPlatform"
 
 const PLAYER_LEFT = 'assets/images/lik-left.png'
 const MOVE_SPEED = 2
 const JUMP_FORCE = 5
+const HAT_FORCE = 15
+const SPRING_FORCE = 8
 
 export class Player extends GameObject{
     private sprite: Sprite
@@ -64,9 +67,8 @@ export class Player extends GameObject{
     }
 
 
-    private jump():void{
-        this.rigidBody.addForce(new Vector2(0, JUMP_FORCE), ForceMode.VelocityChange)
-        SoundManager.playJumpSound()
+    private jump(force: number):void{
+        this.rigidBody.addForce(new Vector2(0, force), ForceMode.VelocityChange)
     }
 
     public OnTriggerStay = (collider: Collider) =>{
@@ -82,9 +84,18 @@ export class Player extends GameObject{
             }
             else
             {
-                this.jump()
+                this.jump(JUMP_FORCE)
+                SoundManager.playJumpSound()
             }
-
+        }
+        else if (collider.gameObject.name === 'Spring' && this.isFalling){
+            (collider.gameObject as Spring).activeSpring()
+            this.jump(SPRING_FORCE)
+            SoundManager.playSpringSound()
+        }
+        else if (collider.gameObject.name === 'Hat'){
+            collider.gameObject.setActive(false)
+            this.jump(HAT_FORCE)
         }
     }
 

@@ -8,6 +8,7 @@ import { Game } from "../game"
 import { Enviroment } from "./Enviroment"
 import { Level } from "./Level"
 import { Player } from "./Player"
+import { Spring } from "./powerup/Spring"
 import { BasePlatform } from "./platforms/BasePlatform"
 import { BluePlatform } from "./platforms/BluePlatform"
 import { BrownPlatform } from "./platforms/BrownPlatform"
@@ -119,6 +120,7 @@ export class PlatformGenerator extends GameObject{
         switch (Utils.WeightPick(Level.scoreToPlatformTypeSpawn[typeLevel])){
             case 0:
                 platform = this.basePlatformsPools.get()
+                this.addPowerUp(platform, currentLevel)
                 break
             case 1:
                 platform = PlatformGenerator.brownPlatformsPools.get()
@@ -126,15 +128,24 @@ export class PlatformGenerator extends GameObject{
                 break
             case 2:
                 platform = this.bluePlatformsPools.get()
+                this.addPowerUp(platform, currentLevel)
                 break
             default:
                 platform = this.basePlatformsPools.get()
+                this.addPowerUp(platform, currentLevel)
                 break
         }
 
-        // Set generated platform with a distance from the previously spawned one
+
+
         this.setPlatformPosition(platform, currentLevel)
         this.previousPlatformGenerated = platform
+    }
+
+    private addPowerUp(platform: BasePlatform, currentLevel: number){
+        if (Utils.RandomPercent(10)){
+            platform.addPowerUp(new Spring())
+        }
     }
 
     private releasePlatform(platform: BasePlatform){
@@ -152,6 +163,7 @@ export class PlatformGenerator extends GameObject{
     }
 
     private setPlatformPosition(platform: BasePlatform, currentLevel: number){
+        // Set generated platform with a distance from the previously spawned one
         platform.transform.position = new Vector2(
             Utils.RandomFloat(-Canvas.size.x / 2, Canvas.size.x / 2),
             this.previousPlatformGenerated.transform.position.y - 
