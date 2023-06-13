@@ -9,26 +9,34 @@ import { GameState } from "./games/GameState"
 import { GameObject } from "./engine/system/GameObject"
 import { SoundManager } from "./games/SoundManager"
 import { TweenManager } from "./engine/system/Tween/TweenManager"
+import { load } from "./engine/loader/ImagePreload"
 
 const FRAME_RATE = 300
+
+const PRELOAD_IMAGES = ['assets/images/green-platform.png', 
+                        'assets/images/blue-platform.png',
+                        'assets/images/brown-platform-0.png',
+                        'assets/images/lik-left.png',
+                        'assets/images/spring-0.png']
 
 export class Game {
 
     private static gameObjects: GameObject[] = []
 
     constructor() {
-        Input.init()
-        Time.init()
-        UIManager.init()
-        Canvas.init('game')
-        Layer.init()
-        SoundManager.init()
-        TweenManager.init()
+        load(PRELOAD_IMAGES).then(()=>{
+            Input.init()
+            Time.init()
+            UIManager.init()
+            Canvas.init('game')
+            Layer.init()
+            SoundManager.init()
+            TweenManager.init()
+            GameManager.init()
+            GameManager.updateGameState(GameState.Ready)
 
-        GameManager.init()
-        GameManager.updateGameState(GameState.Ready)
-
-        this.loop()
+            this.loop()
+        })
     }
 
     private loop() {

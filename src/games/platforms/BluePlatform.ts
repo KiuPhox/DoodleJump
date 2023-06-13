@@ -12,7 +12,7 @@ export class BluePlatform extends BasePlatform{
     constructor() {
         super()
         this.name = 'BluePlatform'
-        this.sprite.setSprite('/assets/images/blue-platform.png')
+        this.sprite.setSprite('assets/images/blue-platform.png')
         this.moveDirection = Vector2.right
     }
 

@@ -15,7 +15,7 @@ export class BasePlatform extends GameObject{
         collider.isTrigger = true
 
         this.sprite = new Sprite(this, 2)
-        this.sprite.setSprite('/assets/images/green-platform.png')
+        this.sprite.setSprite('assets/images/green-platform.png')
 
         this.addComponent(this.sprite)
         this.addComponent(collider)
