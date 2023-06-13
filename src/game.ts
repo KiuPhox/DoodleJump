@@ -29,7 +29,9 @@ const PRELOAD_IMAGES = ['assets/images/green-platform.png',
                         'assets/images/top-score.png',
                         'assets/images/doodle-jump.png',
                         'assets/images/play.png',
-                        'assets/images/play-on.png']
+                        'assets/images/play-on.png',
+                        'assets/images/monster-1.png',
+                        'assets/images/hole.png',]
 
 export class Game {
 
