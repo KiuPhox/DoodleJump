@@ -2,30 +2,32 @@ import { Collider } from "../../engine/components/Collider"
 import { Sprite } from "../../engine/components/Sprite"
 import { Canvas } from "../../engine/system/Canvas"
 import { GameObject } from "../../engine/system/GameObject"
-import { Vector2 } from "../../engine/utils/Vector2"
 import { LevelGenerator } from "../LevelGenerator"
 
-export class Hole extends GameObject{
-    private sprite: Sprite
+const MONSTER_IMAGE_PATHS = [
+    'assets/images/monster-1.png'
+]
+
+export class Monster extends GameObject{
+    public sprite: Sprite
 
     constructor(){
-        super("Hole")
-
-        this.sprite = new Sprite(this, 2)
-        this.sprite.setSprite('assets/images/hole.png')
+        super('Monster')
 
         const collider = new Collider(this)
         collider.isTrigger = true
-        collider.scale = new Vector2(0.5, 0.5)
 
-        this.addComponent(this.sprite)
+        this.sprite = new Sprite(this, 2)
+        this.sprite.setSprite(MONSTER_IMAGE_PATHS[0])
+
         this.addComponent(collider)
+        this.addComponent(this.sprite)
     }
 
     public update(): void {
         super.update()
         if (this.transform.position.y + this.sprite.height / 2 < -Canvas.size.y / 2){
-            LevelGenerator.holePools.release(this)
+            LevelGenerator.monsterPools.release(this)
         }
 
     }

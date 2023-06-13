@@ -7,17 +7,23 @@ const HAT_AUDIO_PATH = 'assets/audios/propeller.mp3'
 const JETPACK_AUDIO_PATH = 'assets/audios/jetpack.mp3'
 const FALLING_AUDIO_PATH = 'assets/audios/falling.mp3'
 const WHITE_AUDIO_PATH = 'assets/audios/white.mp3'
+const MONSTER_HIT_AUDIO_PATH = 'assets/audios/monster_hit.mp3'
+const HOLE_AUDIO_PATH = 'assets/audios/black_hole.mp3'
 
 export class SoundManager{    
 
     private static hatAudio: HTMLAudioElement
     private static jetpackAudio: HTMLAudioElement
     private static fallingAudio: HTMLAudioElement
+    private static monsterHitAudio: HTMLAudioElement
+    private static holeAudio: HTMLAudioElement
 
     public static init():void{
         this.hatAudio = new Audio(HAT_AUDIO_PATH)
         this.jetpackAudio = new Audio(JETPACK_AUDIO_PATH)
         this.fallingAudio = new Audio(FALLING_AUDIO_PATH)
+        this.monsterHitAudio = new Audio(MONSTER_HIT_AUDIO_PATH)
+        this.holeAudio = new Audio(HOLE_AUDIO_PATH)
     }
 
     public static playJumpSound(): void {
@@ -59,6 +65,16 @@ export class SoundManager{
         this.fallingAudio.play()
     }
 
+    public static playMonsterHitSound(): void{
+        this.monsterHitAudio.volume = 0.2
+        this.monsterHitAudio.play()
+    }
+
+    public static playHoleSound(): void{
+        this.holeAudio.volume = 0.2
+        this.holeAudio.play()
+    }
+
 
     public static playBreakSound(): void {
         const breakAudio = new Audio(BREAK_AUDIO_PATH)
@@ -67,4 +83,6 @@ export class SoundManager{
         breakAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
         breakAudio.play()
     }
+
+    
 }

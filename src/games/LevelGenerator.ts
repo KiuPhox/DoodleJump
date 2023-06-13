@@ -19,6 +19,7 @@ import { GameManager } from "./GameManager"
 import { WhitePlatform } from "./platforms/WhitePlatform"
 import { Hole } from "./obstacles/Hole"
 import { ScoreManager } from "./ui/ScoreManager"
+import { Monster } from "./obstacles/Monster"
 
 const INITIAL_PLATFORMS_COUNT = 20
 
@@ -29,10 +30,14 @@ export class LevelGenerator extends GameObject{
     private platforms: BasePlatform[]
     private platformSprite: Sprite
 
+    private obstacles: GameObject[]
+
     private basePlatformsPools: ObjectPool<BasePlatform>
     private bluePlatformsPools: ObjectPool<BluePlatform>
     public static brownPlatformsPools: ObjectPool<BrownPlatform>
     public static whitePlatformsPools: ObjectPool<WhitePlatform>
+    public static holePools: ObjectPool<Hole>
+    public static monsterPools: ObjectPool<Monster>
 
     private previousPlatformGenerated: BasePlatform
     private maxDistance: number
@@ -44,6 +49,7 @@ export class LevelGenerator extends GameObject{
         this.isInitialGenerated = false
 
         this.platforms = []
+        this.obstacles = []
         this.enviroment = Game.Find('Enviroment') as Enviroment
         this.player = Game.Find('Player') as Player
 
@@ -92,6 +98,28 @@ export class LevelGenerator extends GameObject{
             (obj) => { obj.setActive(false)}
         )
 
+        LevelGenerator.holePools= new ObjectPool<Hole>(
+            () => {
+                const hole = new Hole()
+                hole.parent = this.enviroment
+                this.obstacles.push(hole)
+                return hole
+            },
+            (obj) =>{ obj.setActive(true)},
+            (obj) => { obj.setActive(false)}
+        )
+
+        LevelGenerator.monsterPools= new ObjectPool<Monster>(
+            () => {
+                const monster = new Monster()
+                monster.parent = this.enviroment
+                this.obstacles.push(monster)
+                return monster
+            },
+            (obj) =>{ obj.setActive(true)},
+            (obj) => { obj.setActive(false)}
+        )
+
         GameManager.OnGameStateChanged.subscribe(this.OnGameStateChange)
     }
 
@@ -110,26 +138,34 @@ export class LevelGenerator extends GameObject{
             this.player.transform.position.y + this.maxDistance >
             this.previousPlatformGenerated.transform.position.y){
                 this.spawnPlatform()
+
+                if (Utils.RandomPercent(10)){
+                    this.spawnObstacle()
+                }
             }
 
     }
 
     public spawnObstacle(): void{
         let obstacle = null
-
-        switch (Utils.WeightPick(Level.obstacleSpawnChances)){
+        
+        switch (Utils.WeightPick(Level.getObstacleTypes(ScoreManager.getScore()))){
             case 0:
-                obstacle = new Hole()
                 break
             case 1:
-                obstacle = new Hole()
+                obstacle = LevelGenerator.holePools.get()
+                break
+            case 2:
+                obstacle = LevelGenerator.monsterPools.get()
                 break
             default:
-                obstacle = new Hole()
+                obstacle = LevelGenerator.holePools.get()
         }
 
-        obstacle.transform.position = this.previousPlatformGenerated.transform.position
-        obstacle.parent = this.enviroment
+        if (obstacle){
+            obstacle.parent = this.enviroment
+            obstacle.transform.position = this.previousPlatformGenerated.transform.position.add(new Vector2(0, 200))
+        }
     }
 
 
@@ -197,6 +233,17 @@ export class LevelGenerator extends GameObject{
         }
     }
 
+    private releaseObstacle(obstacle: GameObject){
+        switch (obstacle.name){
+            case 'Hole':
+                LevelGenerator.holePools.release(obstacle as Hole)
+                break
+            case 'Monster':
+                LevelGenerator.monsterPools.release(obstacle as Monster)
+                break
+        }
+    }
+
     private setPlatformPosition(platform: BasePlatform, currentLevel: number){
         // Set generated platform with a distance from the previously spawned one
         platform.transform.position = new Vector2(
@@ -249,6 +296,9 @@ export class LevelGenerator extends GameObject{
     private reset(){
         for (const platform of this.platforms){
             this.releasePlatform(platform)
+        }
+        for (const obstacle of this.obstacles){
+            this.releaseObstacle(obstacle)
         }
     }
 }

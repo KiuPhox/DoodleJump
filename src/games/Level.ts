@@ -5,8 +5,12 @@ export class Level {
     // Objects: Springs, Hat, Jetpacks
     public static powerUpSpawnChances: number[] = [85, 10, 5]
 
-    // Obstacle: Hole, Monster
-    public static obstacleSpawnChances: number[] = [100, 0]
+    // Obstacle: None, Hole, Monster
+    public static obstacleSpawnChances: {[key:number]: number[]} = {
+        8000: [100, 0, 0],
+        10000: [55, 5, 35],
+        15000: [50, 10, 40]
+    }
 
     private static scoreToPlatfomSpawnDistances: {[key:number]: Vector2} = {
         1000: new Vector2(20, 50),
@@ -36,6 +40,19 @@ export class Level {
         const keys = Object.keys(this.scoreToPlatformTypeSpawn)
         const lastKey = keys[keys.length - 1]
         return this.scoreToPlatformTypeSpawn[parseFloat(lastKey)]
+    }
+
+    public static getObstacleTypes(score: number): number[]{
+        for (const key in this.obstacleSpawnChances){
+            if (score < parseFloat(key)){
+                return this.obstacleSpawnChances[key]
+
+            }
+        }
+
+        const keys = Object.keys(this.obstacleSpawnChances)
+        const lastKey = keys[keys.length - 1]
+        return this.obstacleSpawnChances[parseFloat(lastKey)]
     }
 
     public static getPlatfomSpawnDistances(score: number): Vector2{

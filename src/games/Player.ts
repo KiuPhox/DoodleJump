@@ -39,6 +39,7 @@ export class Player extends GameObject{
     private gameOverDelayTimer: number
 
     private isHoleTouched: boolean
+    private isMonsterTouched: boolean
 
     constructor(){
         super("Player")
@@ -55,6 +56,7 @@ export class Player extends GameObject{
         this.addComponent(this.collider)
 
         this.isHoleTouched = false
+        this.isMonsterTouched = false
 
         GameManager.OnGameStateChanged.subscribe(this.OnGameStateChanged)
     }
@@ -71,7 +73,7 @@ export class Player extends GameObject{
         }
 
         // Control
-        if (GameManager.getGameState() !== GameState.Ready && !this.isHoleTouched){
+        if (GameManager.getGameState() !== GameState.Ready && !this.isHoleTouched && !this.isMonsterTouched){
             if (Input.getKey('KeyD') || Input.getKey('ArrowRight')){
                 this.rigidBody.velocity = new Vector2(MOVE_SPEED, this.rigidBody.velocity.y)
                 this.sprite.flipX = true
@@ -113,7 +115,7 @@ export class Player extends GameObject{
     }
 
     public OnTriggerStay = (collider: Collider) =>{
-        if ((collider.gameObject instanceof BasePlatform) && this.isFalling){
+        if ((collider.gameObject instanceof BasePlatform) && this.isFalling && !this.isMonsterTouched){
             const playerBottom = this.transform.position.y - this.collider.size.y / 2
             const platformTop = collider.gameObject.transform.position.y
 
@@ -143,48 +145,59 @@ export class Player extends GameObject{
             this.jump(SPRING_FORCE)
             SoundManager.playSpringSound()
         }
-        else if (collider.gameObject.name === 'Hat'){
-            if (this.hatTimer > 0) return
-            if (this.jetpackTimer > 0) return
-
-            this.hatTimer = HAT_DURATION
-
-            collider.gameObject.setActive(false)
-            this.rigidBody.velocity = Vector2.zero
-            SoundManager.playHatSound()
-        }
-        else if (collider.gameObject.name === 'Jetpack'){
-            if (this.hatTimer > 0) return
-            if (this.jetpackTimer > 0) return
-
-            this.jetpackTimer = JETPACK_DURATION
-
-            collider.gameObject.setActive(false)
-            this.jump(JETPACK_FORCE)
-            SoundManager.playJetpackSound()
-        }
-        else if (collider.gameObject.name === 'Hole' && !this.isHoleTouched){
-            this.isHoleTouched = true
-            this.rigidBody.gravityScale = 0
-            this.rigidBody.velocity = Vector2.zero
-            
-            new Tween(this.transform, 1).to({'scale': 0, 'rotation': 20}).setEasing(Ease.OutQuart).onComplete(()=>{
-                GameManager.updateGameState(GameState.GameOver)
-            })
+        
+        if (!this.isImmortal){
+            if (collider.gameObject.name === 'Hat'){
+                this.hatTimer = HAT_DURATION
+    
+                collider.gameObject.setActive(false)
+                this.rigidBody.velocity = Vector2.zero
+                SoundManager.playHatSound()
+            }
+            else if (collider.gameObject.name === 'Jetpack'){
+                this.jetpackTimer = JETPACK_DURATION
+    
+                collider.gameObject.setActive(false)
+                this.jump(JETPACK_FORCE)
+                SoundManager.playJetpackSound()
+            }
+            else if (collider.gameObject.name === 'Hole' && !this.isHoleTouched){
+                this.isHoleTouched = true
+                this.rigidBody.gravityScale = 0
+                this.rigidBody.velocity = Vector2.zero
+                SoundManager.playHoleSound()
+                
+                new Tween(this.transform, 1).to({'scale': 0, 'rotation': 20}).setEasing(Ease.OutQuart).onComplete(()=>{
+                    GameManager.updateGameState(GameState.GameOver)
+                })
+            }
+            else if (collider.gameObject.name === 'Monster' && !this.isMonsterTouched){
+                this.isMonsterTouched = true
+                SoundManager.playMonsterHitSound()
+            }
         }
     }
 
     public get isFalling(): boolean { return this.rigidBody.velocity.y < 0}
+
+    public get isImmortal(): boolean {return this.hatTimer > 0 || this.jetpackTimer > 0}
 
     OnGameStateChanged = (gameState: GameState) =>{
         switch (gameState){
             case GameState.Ready:
                 this.transform.position = new Vector2(-80, 0)
                 this.rigidBody.velocity = Vector2.zero
+                this.transform.scale = 1
+                this.transform.rotation = 0
+                this.rigidBody.gravityScale =0.08
                 break
             case GameState.Playing:
                 this.isHoleTouched = false
+                this.isMonsterTouched = false
+                this.transform.scale = 1
+                this.transform.rotation = 0
                 this.transform.position = Vector2.zero
+                this.rigidBody.gravityScale =0.08
                 break
             case GameState.GameOver:
                 this.gameOverDelayTimer = GAME_OVER_DELAY
