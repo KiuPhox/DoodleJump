@@ -1,6 +1,7 @@
 import { GameObject } from "../system/GameObject"
 import { Canvas } from "../system/Canvas"
 import { Component } from "./Component"
+import { ImagePreload } from "../loader/ImagePreload"
 
 export class Sprite extends Component {
     private _image: HTMLImageElement
@@ -11,7 +12,7 @@ export class Sprite extends Component {
 
     constructor(gameObject: GameObject, _order: number) {
         super(gameObject)
-        this._image = new Image()
+
         this.order = _order
         this.name = 'Sprite'
         this.flipX = false
@@ -22,7 +23,17 @@ export class Sprite extends Component {
     }
 
     public setSprite(path: string) {
-        this._image.src = path
+        const image = ImagePreload.getImage(path)
+
+        if (image === undefined){
+            this._image = new Image()
+            this._image.src = path
+        }
+        else
+        {
+            this._image = image
+        }
+        
     }
 
     get width(): number { return this._image.width }

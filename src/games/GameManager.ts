@@ -11,6 +11,7 @@ import { BlackImage } from "./ui/BlackImage"
 import { MainMenu } from "./ui/MainMenu"
 import { SoundManager } from "./SoundManager"
 import { ScoreManager } from "./ui/ScoreManager"
+import { GameOverCanvas } from "./ui/GameOverCanvas"
 
 export class GameManager {
     private static gameState: GameState
@@ -35,6 +36,8 @@ export class GameManager {
         new LevelGenerator()
 
         new MainMenu()
+
+        new GameOverCanvas()
 
         this.blackImage = new BlackImage()
 

@@ -37,8 +37,6 @@ export class MainMenu extends GameObject{
                 this.playButton.setActive(false)
                 this.title.setActive(false)
                 break
-            case GameState.GameOver:
-                this.playButton.setActive(true)
         }
     }
 }

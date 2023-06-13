@@ -63,8 +63,9 @@ export class Canvas {
         }
 
         for (const text of this.texts) {
+            if (!text.active) continue
             Canvas.context.font = text.font
-            Canvas.context.fillText(text.text, text.transform.position.x, text.transform.position.y)
+            Canvas.context.fillText(text.text, text.transform.position.x + this.size.x / 2, text.transform.position.y + this.size.y/2)
         }
     }
 
@@ -81,7 +82,7 @@ export class Canvas {
         const mousePos = new Vector2(event.offsetX - Canvas.size.x / 2, -event.offsetY + Canvas.size.y / 2)
 
         for (const button of UIManager.buttons) {
-            if (!button.active) return
+            if (!button.active) continue
 
             const buttonPos = button.transform.position
 

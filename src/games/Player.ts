@@ -180,6 +180,7 @@ export class Player extends GameObject{
         switch (gameState){
             case GameState.Ready:
                 this.transform.position = new Vector2(-80, 0)
+                this.rigidBody.velocity = Vector2.zero
                 break
             case GameState.Playing:
                 this.isHoleTouched = false

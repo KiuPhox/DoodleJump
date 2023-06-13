@@ -9,22 +9,36 @@ import { GameState } from "./games/GameState"
 import { GameObject } from "./engine/system/GameObject"
 import { SoundManager } from "./games/SoundManager"
 import { TweenManager } from "./engine/system/Tween/TweenManager"
-import { load } from "./engine/loader/ImagePreload"
+import { ImagePreload } from "./engine/loader/ImagePreload"
 
 const FRAME_RATE = 300
 
 const PRELOAD_IMAGES = ['assets/images/green-platform.png', 
                         'assets/images/blue-platform.png',
                         'assets/images/brown-platform-0.png',
+                        'assets/images/brown-platform-1.png',
+                        'assets/images/brown-platform-2.png',
+                        'assets/images/brown-platform-3.png',
+                        'assets/images/white-platform.png',
                         'assets/images/lik-left.png',
-                        'assets/images/spring-0.png']
+                        'assets/images/spring-0.png',
+                        'assets/images/spring-1.png',
+                        'assets/images/hat.png',
+                        'assets/images/jetpack.png',
+                        'assets/images/play-on.png',
+                        'assets/images/top-score.png',
+                        'assets/images/doodle-jump.png',
+                        'assets/images/play.png',
+                        'assets/images/play-on.png']
 
 export class Game {
 
     private static gameObjects: GameObject[] = []
 
     constructor() {
-        load(PRELOAD_IMAGES).then(()=>{
+        ImagePreload.init()
+
+        ImagePreload.load(PRELOAD_IMAGES).then(()=>{
             Input.init()
             Time.init()
             UIManager.init()

@@ -38,8 +38,6 @@ export class LevelGenerator extends GameObject{
     private maxDistance: number
     private isInitialGenerated: boolean
 
-    public currentScore: number
-
     constructor() {
         super('PlatformGenerator')
 
@@ -99,6 +97,7 @@ export class LevelGenerator extends GameObject{
 
     public update(): void {
         super.update()
+        
         for (let i = 0; i < this.platforms.length; i++) {
             if (this.platforms[i].active && 
                 this.platforms[i].transform.position.y + this.platformSprite.height / 2 < -Canvas.size.y / 2){
@@ -106,8 +105,6 @@ export class LevelGenerator extends GameObject{
                 this.releasePlatform(this.platforms[i])
             }
         }
-
-        this.currentScore = ScoreManager.getScore()
 
         if (this.isInitialGenerated && 
             this.player.transform.position.y + this.maxDistance >
@@ -141,14 +138,14 @@ export class LevelGenerator extends GameObject{
 
         // Choose platform type to spawn
 
-        switch (Utils.WeightPick(Level.getPlaformTypes(this.currentScore))){
+        switch (Utils.WeightPick(Level.getPlaformTypes(ScoreManager.getScore()))){
             case 0:
                 platform = this.basePlatformsPools.get()
                 this.addPowerUp(platform)
                 break
             case 1:
                 platform = LevelGenerator.brownPlatformsPools.get()
-                this.setPlatformPosition(this.basePlatformsPools.get(), this.currentScore)
+                this.setPlatformPosition(this.basePlatformsPools.get(), ScoreManager.getScore())
                 break
             case 2:
                 platform = this.bluePlatformsPools.get()
@@ -162,7 +159,7 @@ export class LevelGenerator extends GameObject{
                 break
         }
 
-        this.setPlatformPosition(platform, this.currentScore)
+        this.setPlatformPosition(platform, ScoreManager.getScore())
         this.previousPlatformGenerated = platform
     }
 

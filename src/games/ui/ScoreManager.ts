@@ -8,6 +8,7 @@ import { GameState } from "../GameState"
 
 export class ScoreManager extends GameObject{
     private static score: number
+    private static highScore: number
     private enviroment: Enviroment
     private scoreText: Text
 
@@ -15,9 +16,11 @@ export class ScoreManager extends GameObject{
         super('ScoreManager')
         this.enviroment = Game.Find('Enviroment') as Enviroment
         this.scoreText = new Text()
-        this.scoreText.transform.position = new Vector2(8, 27)
+        this.scoreText.font = '600 32px DoodleJump'
+        this.scoreText.transform.position = new Vector2(-150, -230)
         this.scoreText.name = 'ScoreText'
         ScoreManager.score = 0
+        ScoreManager.highScore = 0
     }
 
     public update(): void {
@@ -25,10 +28,21 @@ export class ScoreManager extends GameObject{
         if (GameManager.getGameState() === GameState.Playing){
             ScoreManager.score = this.enviroment.point() <= 0 ? 0 : Math.floor(this.enviroment.point())
             this.scoreText.text = ScoreManager.score.toString()
+
+            if (ScoreManager.score > ScoreManager.highScore){
+                ScoreManager.highScore = ScoreManager.score
+            }
+        }
+        else {
+            ScoreManager.score = 0
         }
     }
 
     public static getScore(): number {
         return this.score
+    }
+
+    public static getHighScore(): number {
+        return this.highScore
     }
 }
