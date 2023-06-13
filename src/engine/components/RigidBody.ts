@@ -25,17 +25,18 @@ export class RigidBody extends Component {
 
     public addForce(forceVector: Vector2, forceMode: ForceMode = ForceMode.Force): void {
         if (forceMode == ForceMode.Force) {
-            this.velocity = this.velocity.sub(forceVector)
+            this.velocity = this.velocity.add(forceVector)
         } else if (forceMode == ForceMode.VelocityChange) {
-            this.velocity = new Vector2(forceVector.x, -forceVector.y)
+            this.velocity = new Vector2(forceVector.x, forceVector.y)
         }
     }
 
     public update(): void {
         if (this.gravityScale) {
-            this.velocity = this.velocity.add(new Vector2(0, this.gravityScale * GRAVITY_ACCELERATION).mul(Time.deltaTime))
+            this.velocity = this.velocity.add(new Vector2(0, -GRAVITY_ACCELERATION * this.gravityScale).mul(Time.deltaTime))
         }
         if (this.velocity.magnitude > 0.1)
             this.gameObject.transform.position = this.gameObject.transform.position.add(this.velocity.mul(Time.deltaTime * GRAVITY_ACCELERATION))
+        
     }
 }

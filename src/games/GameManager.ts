@@ -6,9 +6,11 @@ import Background from "./Background"
 import { Player } from "./Player"
 import { Enviroment } from "./Enviroment"
 import { TopBar } from "./ui/TopBar"
-import { PlatformGenerator } from "./PlatformGenerator"
+import { LevelGenerator } from "./LevelGenerator"
 import { BlackImage } from "./ui/BlackImage"
 import { MainMenu } from "./ui/MainMenu"
+import { SoundManager } from "./SoundManager"
+import { ScoreManager } from "./ui/ScoreManager"
 
 export class GameManager {
     private static gameState: GameState
@@ -30,18 +32,14 @@ export class GameManager {
 
         new Enviroment(player)
 
-        new PlatformGenerator()
+        new LevelGenerator()
 
         new MainMenu()
 
         this.blackImage = new BlackImage()
 
-
-        // for (let i = 0; i < 200; i++){
-        //     const platform = new BasePlatform()
-        //     platform.transform.position = new Vector2(Utils.RandomFloat(-150, 150), Utils.RandomFloat(-5000, 300))
-        //     platform.parent = enviroment
-        // }
+        new ScoreManager()
+        
         this.updateGameState(GameState.Ready)
     }
 
@@ -54,6 +52,7 @@ export class GameManager {
             case GameState.Playing:
                 break
             case GameState.GameOver:
+                SoundManager.playGameOverSound()
                 break
         }
 

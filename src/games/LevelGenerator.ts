@@ -17,10 +17,12 @@ import { Jetpack } from "./powerup/Jetpack"
 import { GameState } from "./GameState"
 import { GameManager } from "./GameManager"
 import { WhitePlatform } from "./platforms/WhitePlatform"
+import { Hole } from "./obstacles/Hole"
+import { ScoreManager } from "./ui/ScoreManager"
 
 const INITIAL_PLATFORMS_COUNT = 20
 
-export class PlatformGenerator extends GameObject{
+export class LevelGenerator extends GameObject{
     private enviroment: Enviroment
     private player: Player
 
@@ -35,6 +37,8 @@ export class PlatformGenerator extends GameObject{
     private previousPlatformGenerated: BasePlatform
     private maxDistance: number
     private isInitialGenerated: boolean
+
+    public currentScore: number
 
     constructor() {
         super('PlatformGenerator')
@@ -68,7 +72,7 @@ export class PlatformGenerator extends GameObject{
             (obj) => { obj.setActive(false)}
         )
 
-        PlatformGenerator.brownPlatformsPools= new ObjectPool<BrownPlatform>(
+        LevelGenerator.brownPlatformsPools= new ObjectPool<BrownPlatform>(
             () => {
                 const platform = new BrownPlatform()
                 platform.parent = this.enviroment
@@ -79,7 +83,7 @@ export class PlatformGenerator extends GameObject{
             (obj) => { obj.setActive(false)}
         )
 
-        PlatformGenerator.whitePlatformsPools= new ObjectPool<WhitePlatform>(
+        LevelGenerator.whitePlatformsPools= new ObjectPool<WhitePlatform>(
             () => {
                 const platform = new WhitePlatform()
                 platform.parent = this.enviroment
@@ -97,50 +101,68 @@ export class PlatformGenerator extends GameObject{
         super.update()
         for (let i = 0; i < this.platforms.length; i++) {
             if (this.platforms[i].active && 
-                this.platforms[i].transform.position.y - this.platformSprite.height / 2 > Canvas.size.y / 2){
+                this.platforms[i].transform.position.y + this.platformSprite.height / 2 < -Canvas.size.y / 2){
 
                 this.releasePlatform(this.platforms[i])
             }
         }
 
-        const currentScore = Math.floor(this.enviroment.point())
-        console.log(currentScore)
+        this.currentScore = ScoreManager.getScore()
 
         if (this.isInitialGenerated && 
-            this.player.transform.position.y - this.maxDistance < 
+            this.player.transform.position.y + this.maxDistance >
             this.previousPlatformGenerated.transform.position.y){
-                this.spawn(currentScore)
+                this.spawnPlatform()
             }
 
     }
 
-    public spawn(currentScore: number): void{
+    public spawnObstacle(): void{
+        let obstacle = null
+
+        switch (Utils.WeightPick(Level.obstacleSpawnChances)){
+            case 0:
+                obstacle = new Hole()
+                break
+            case 1:
+                obstacle = new Hole()
+                break
+            default:
+                obstacle = new Hole()
+        }
+
+        obstacle.transform.position = this.previousPlatformGenerated.transform.position
+        obstacle.parent = this.enviroment
+    }
+
+
+    public spawnPlatform(): void{
         let platform = null
 
         // Choose platform type to spawn
 
-        switch (Utils.WeightPick(Level.getPlaformTypes(currentScore))){
+        switch (Utils.WeightPick(Level.getPlaformTypes(this.currentScore))){
             case 0:
                 platform = this.basePlatformsPools.get()
                 this.addPowerUp(platform)
                 break
             case 1:
-                platform = PlatformGenerator.brownPlatformsPools.get()
-                this.setPlatformPosition(this.basePlatformsPools.get(), currentScore)
+                platform = LevelGenerator.brownPlatformsPools.get()
+                this.setPlatformPosition(this.basePlatformsPools.get(), this.currentScore)
                 break
             case 2:
                 platform = this.bluePlatformsPools.get()
                 this.addPowerUp(platform)
                 break
             case 3:
-                platform = PlatformGenerator.whitePlatformsPools.get()
+                platform = LevelGenerator.whitePlatformsPools.get()
                 break
             default:
                 platform = this.basePlatformsPools.get()
                 break
         }
 
-        this.setPlatformPosition(platform, currentScore)
+        this.setPlatformPosition(platform, this.currentScore)
         this.previousPlatformGenerated = platform
     }
 
@@ -170,10 +192,10 @@ export class PlatformGenerator extends GameObject{
                 this.bluePlatformsPools.release(platform as BluePlatform)
                 break
             case 'BrownPlatform':
-                PlatformGenerator.brownPlatformsPools.release(platform as BrownPlatform)
+                LevelGenerator.brownPlatformsPools.release(platform as BrownPlatform)
                 break
             case 'WhitePlatform':
-                PlatformGenerator.whitePlatformsPools.release(platform as WhitePlatform)
+                LevelGenerator.whitePlatformsPools.release(platform as WhitePlatform)
                 break
         }
     }
@@ -182,7 +204,7 @@ export class PlatformGenerator extends GameObject{
         // Set generated platform with a distance from the previously spawned one
         platform.transform.position = new Vector2(
             Utils.RandomFloat(-Canvas.size.x / 2 + 20, Canvas.size.x / 2 - 20),
-            this.previousPlatformGenerated.transform.position.y - 
+            this.previousPlatformGenerated.transform.position.y +
             Utils.RandomFloat(
                 Level.getPlatfomSpawnDistances(currentLevel).x,
                 Level.getPlatfomSpawnDistances(currentLevel).y
@@ -202,17 +224,20 @@ export class PlatformGenerator extends GameObject{
     }
 
     private handlePlaying(){
+        this.reset()
+        this.enviroment.transform.position = Vector2.zero
+
         // Initial Platforms
         const firstPlatform = this.basePlatformsPools.get()
-        firstPlatform.transform.position = new Vector2(0, 200)
+        firstPlatform.transform.position = new Vector2(0, -200)
         this.platformSprite = (firstPlatform.getComponent('Sprite') as Sprite)
         this.previousPlatformGenerated = firstPlatform
 
         for (let i = 0; i < INITIAL_PLATFORMS_COUNT; i++){
-            this.spawn(0)
+            this.spawnPlatform()
         }
         // Distance between player and the last platform
-        this.maxDistance = this.player.transform.position.y - this.previousPlatformGenerated.transform.position.y
+        this.maxDistance = this.previousPlatformGenerated.transform.position.y - this.player.transform.position.y
         
         this.isInitialGenerated = true
     }
@@ -220,7 +245,7 @@ export class PlatformGenerator extends GameObject{
     private handleReady(){
         this.reset()
         const firstPlatform = this.basePlatformsPools.get()
-        firstPlatform.transform.position = new Vector2(-80, 200)
+        firstPlatform.transform.position = new Vector2(-80, -200)
         this.platformSprite = (firstPlatform.getComponent('Sprite') as Sprite)
     }
 

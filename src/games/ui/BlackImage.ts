@@ -8,10 +8,6 @@ const FADE_DURATION = 1
 
 export class BlackImage extends GameObject {
     private sprite: Sprite
-    private fadeTarget: number
-    private fadeStartTime: number
-
-    private fadeTween: Tween | null
 
     constructor(){
         super('BlackImage')
@@ -19,11 +15,6 @@ export class BlackImage extends GameObject {
         this.sprite = new Sprite(this, 0)
         this.sprite.setSprite('assets/images/black-image.png')
         this.sprite.alpha = 0
-
-        this.fadeTarget = 0
-        this.fadeStartTime = 0
-
-        this.fadeTween = null
     }
 
     public update(): void {
@@ -31,8 +22,7 @@ export class BlackImage extends GameObject {
     }
 
     public show(): void{
-        if (this.fadeTween) return
-        this.fadeTween = new Tween(this.sprite, FADE_DURATION).to({'alpha': 1}).onComplete(()=>{
+        new Tween(this.sprite, FADE_DURATION).to({'alpha': 1}).onComplete(()=>{
             GameManager.updateGameState(GameState.Playing)
             new Tween(this.sprite, 0).to({'alpha': 0})
         })

@@ -12,6 +12,6 @@ export class TopBar extends GameObject{
         this.addComponent(sprite)
 
     
-        this.transform.position = new Vector2(0, -Canvas.size.y / 2 + sprite.height / 2)
+        this.transform.position = new Vector2(0, Canvas.size.y / 2 - sprite.height / 2)
     }
 }

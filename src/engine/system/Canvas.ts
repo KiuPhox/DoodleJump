@@ -1,3 +1,4 @@
+import { Text } from "../UI/Text"
 import { UIManager } from "../UI/UIManager"
 import { Sprite } from "../components/Sprite"
 import { Vector2 } from "../utils/Vector2"
@@ -5,9 +6,10 @@ import { Vector2 } from "../utils/Vector2"
 export class Canvas {
 
     private static canvas: HTMLCanvasElement
-    private static context: CanvasRenderingContext2D | null
+    public static context: CanvasRenderingContext2D | null
     public static size: Vector2 = new Vector2(320, 512)
     private static sprites: Sprite[] = []
+    private static texts: Text[] = []
 
     public static init(canvasName: string) {
         this.canvas = <HTMLCanvasElement>document.getElementById(canvasName)
@@ -30,7 +32,7 @@ export class Canvas {
             const spriteCenterY = sprite.height / 2 * gameObject.transform.scale
 
             const drawX = gameObject.transform.position.x + canvasCenterX
-            const drawY = gameObject.transform.position.y + canvasCenterY
+            const drawY = -gameObject.transform.position.y + canvasCenterY
 
 
             Canvas.context.save()
@@ -59,6 +61,11 @@ export class Canvas {
 
             Canvas.context.restore()
         }
+
+        for (const text of this.texts) {
+            Canvas.context.font = text.font
+            Canvas.context.fillText(text.text, text.transform.position.x, text.transform.position.y)
+        }
     }
 
     public static registerSprite(sprite: Sprite): void {
@@ -66,8 +73,12 @@ export class Canvas {
         Canvas.sprites.sort((a, b) => (b.order - a.order))
     }
 
+    public static registerText(text: Text): void{
+        Canvas.texts.push(text)
+    }
+
     private static handleClick(event: MouseEvent): void {
-        const mousePos = new Vector2(event.offsetX - Canvas.size.x / 2, event.offsetY - Canvas.size.y / 2)
+        const mousePos = new Vector2(event.offsetX - Canvas.size.x / 2, -event.offsetY + Canvas.size.y / 2)
 
         for (const button of UIManager.buttons) {
             if (!button.active) return

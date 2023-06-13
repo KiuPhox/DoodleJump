@@ -12,10 +12,12 @@ import { BrownPlatform } from "./platforms/BrownPlatform"
 import { Time } from "../engine/system/Time"
 import { GameManager } from "./GameManager"
 import { GameState } from "./GameState"
-import { PlatformGenerator } from "./PlatformGenerator"
+import { LevelGenerator } from "./LevelGenerator"
 import { WhitePlatform } from "./platforms/WhitePlatform"
+import { Tween } from "../engine/system/Tween/Tween"
+import { Ease } from "../engine/system/Tween/Ease"
 
-const PLAYER_LEFT = 'assets/images/lik-left.png'
+const PLAYER_LEFT_IMAGE_PATH = 'assets/images/lik-left.png'
 const MOVE_SPEED = 2
 const JUMP_FORCE = 5
 const HAT_FORCE = 12
@@ -25,6 +27,8 @@ const SPRING_FORCE = 8
 const HAT_DURATION = 2.5
 const JETPACK_DURATION = 2.5
 
+const GAME_OVER_DELAY = 0.5
+
 export class Player extends GameObject{
     private sprite: Sprite
     private rigidBody: RigidBody
@@ -32,12 +36,15 @@ export class Player extends GameObject{
 
     private hatTimer: number
     private jetpackTimer: number
+    private gameOverDelayTimer: number
+
+    private isHoleTouched: boolean
 
     constructor(){
         super("Player")
         this.rigidBody = new RigidBody(this, 0.08)
         this.sprite = new Sprite(this, 1)
-        this.sprite.setSprite(PLAYER_LEFT)
+        this.sprite.setSprite(PLAYER_LEFT_IMAGE_PATH)
         this.collider = new Collider(this)
         this.collider.isTrigger = true
         this.collider.scale = new Vector2(0.5, 1)
@@ -47,6 +54,8 @@ export class Player extends GameObject{
         this.addComponent(this.rigidBody)
         this.addComponent(this.collider)
 
+        this.isHoleTouched = false
+
         GameManager.OnGameStateChanged.subscribe(this.OnGameStateChanged)
     }
 
@@ -55,13 +64,14 @@ export class Player extends GameObject{
 
         this.hatTimer -= Time.deltaTime
         this.jetpackTimer -= Time.deltaTime
+        this.gameOverDelayTimer -= Time.deltaTime
 
         if (this.hatTimer > 0){
             this.rigidBody.addForce(Vector2.up.mul(Time.deltaTime * HAT_FORCE), ForceMode.Force)
         }
 
         // Control
-        if (GameManager.getGameState() === GameState.Playing){
+        if (GameManager.getGameState() !== GameState.Ready && !this.isHoleTouched){
             if (Input.getKey('KeyD') || Input.getKey('ArrowRight')){
                 this.rigidBody.velocity = new Vector2(MOVE_SPEED, this.rigidBody.velocity.y)
                 this.sprite.flipX = true
@@ -77,7 +87,8 @@ export class Player extends GameObject{
             }
         }
         
-        if (this.transform.position.y <= 0){
+        if (this.transform.position.y >= 0 || 
+            (GameManager.getGameState() === GameState.GameOver && this.gameOverDelayTimer > 0)){
             this.transform.position = new Vector2(this.transform.position.x, 0)
         }
 
@@ -89,10 +100,9 @@ export class Player extends GameObject{
             this.transform.position = new Vector2(-Canvas.size.x / 2 - this.sprite.width / 2, this.transform.position.y)
         }
 
-        if (this.transform.position.y - this.sprite.height / 2 > Canvas.size.y / 2){
+        if (this.transform.position.y + this.sprite.height / 2 < - Canvas.size.y / 2){
             if (GameManager.getGameState() === GameState.Playing || GameManager.getGameState() === GameState.Ready){
                 GameManager.updateGameState(GameState.GameOver)
-                SoundManager.playGameOverSound()
             }
         }
     }
@@ -103,12 +113,11 @@ export class Player extends GameObject{
     }
 
     public OnTriggerStay = (collider: Collider) =>{
-
         if ((collider.gameObject instanceof BasePlatform) && this.isFalling){
-            const playerBottom = this.transform.position.y + this.collider.size.y / 2
-            const platformTop = collider.gameObject.transform.position.y 
+            const playerBottom = this.transform.position.y - this.collider.size.y / 2
+            const platformTop = collider.gameObject.transform.position.y
 
-            if (playerBottom >= platformTop) return
+            if (playerBottom < platformTop) return
 
             if (collider.gameObject.name == 'BrownPlatform')
             {
@@ -119,7 +128,7 @@ export class Player extends GameObject{
                 this.jump(JUMP_FORCE)
             
                 if (collider.gameObject.name == 'WhitePlatform'){
-                    PlatformGenerator.whitePlatformsPools.release(collider.gameObject as WhitePlatform)
+                    LevelGenerator.whitePlatformsPools.release(collider.gameObject as WhitePlatform)
                     SoundManager.playWhiteSound()
                 }
                 else
@@ -154,9 +163,18 @@ export class Player extends GameObject{
             this.jump(JETPACK_FORCE)
             SoundManager.playJetpackSound()
         }
+        else if (collider.gameObject.name === 'Hole' && !this.isHoleTouched){
+            this.isHoleTouched = true
+            this.rigidBody.gravityScale = 0
+            this.rigidBody.velocity = Vector2.zero
+            
+            new Tween(this.transform, 1).to({'scale': 0, 'rotation': 20}).setEasing(Ease.OutQuart).onComplete(()=>{
+                GameManager.updateGameState(GameState.GameOver)
+            })
+        }
     }
 
-    public get isFalling(): boolean { return this.rigidBody.velocity.y > 0}
+    public get isFalling(): boolean { return this.rigidBody.velocity.y < 0}
 
     OnGameStateChanged = (gameState: GameState) =>{
         switch (gameState){
@@ -164,7 +182,11 @@ export class Player extends GameObject{
                 this.transform.position = new Vector2(-80, 0)
                 break
             case GameState.Playing:
+                this.isHoleTouched = false
                 this.transform.position = Vector2.zero
+                break
+            case GameState.GameOver:
+                this.gameOverDelayTimer = GAME_OVER_DELAY
                 break
         }
     }

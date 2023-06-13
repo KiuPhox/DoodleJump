@@ -10,6 +10,10 @@ export class PlayButton extends Button{
         super('PlayButton', PLAY_IMAGE_PATH)
     }
 
+    public onEnabled(): void {
+        this.sprite.setSprite(PLAY_IMAGE_PATH)
+    }
+
     onClick(): void {
         this.sprite.setSprite(PLAY_ON_IMAGE_PATH);
         (Game.Find('BlackImage') as BlackImage).show()

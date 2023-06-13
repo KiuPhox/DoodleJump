@@ -5,6 +5,9 @@ export class Level {
     // Objects: Springs, Hat, Jetpacks
     public static powerUpSpawnChances: number[] = [85, 10, 5]
 
+    // Obstacle: Hole, Monster
+    public static obstacleSpawnChances: number[] = [100, 0]
+
     private static scoreToPlatfomSpawnDistances: {[key:number]: Vector2} = {
         1000: new Vector2(20, 50),
         3000: new Vector2(20, 55),
