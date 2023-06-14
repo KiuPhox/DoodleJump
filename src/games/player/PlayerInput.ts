@@ -10,7 +10,6 @@ export class PlayerInput {
         } 
         else if (Input.isTouching){
             const touch = Input.getTouch()
-            console.log(touch)
             if (touch.position.x > 0)
                 return 1
             else if (touch.position.x < 0)
