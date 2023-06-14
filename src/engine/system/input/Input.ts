@@ -1,16 +1,27 @@
+import { Vector2 } from "../../utils/Vector2"
+import { Canvas } from "../Canvas"
+import { Touch } from "./Touch"
+
 export class Input {
     private static previousKeyStates: Set<string> = new Set<string>()
     private static heldKeyStates: Set<string> = new Set<string>()
     private static isHeld: boolean
     private static isMouseDown: boolean
+    
+    private static touch: Touch
+    public static isTouching: boolean
 
     public static init(): void {
-        document.addEventListener('keydown', (event: KeyboardEvent) => this.handleKeyDown(event))
-        document.addEventListener('keyup', (event: KeyboardEvent) => this.handleKeyUp(event))
-        document.addEventListener('mousedown', () => this.handleMouseDown())
-        document.addEventListener('mouseup', () => this.handleMouseUp())
-        document.addEventListener('touchstart', () => this.handleMouseDown())
-        document.addEventListener('touchend', () => this.handleMouseUp())
+        const canvas = Canvas.canvas
+        canvas.addEventListener('keydown', (event: KeyboardEvent) => this.handleKeyDown(event))
+        canvas.addEventListener('keyup', (event: KeyboardEvent) => this.handleKeyUp(event))
+        canvas.addEventListener('mousedown', () => this.handleMouseDown())
+        canvas.addEventListener('mouseup', () => this.handleMouseUp())
+        canvas.addEventListener('touchstart', this.handleTouchStart)
+        canvas.addEventListener('touchend', this.handleTouchEnd)
+
+        this.touch = new Touch()
+        this.isTouching = false
         this.isHeld = false
     }
 
@@ -51,6 +62,25 @@ export class Input {
 
     public static handleMouseUp(): void {
         this.isMouseDown = false
+    }
+
+    public static handleTouchStart(event: TouchEvent): void {
+        Input.isTouching = true
+
+        const rect = (event.target as HTMLElement).getBoundingClientRect()
+
+        const x = event.targetTouches[0].pageX - rect.left
+        const y = event.targetTouches[0].pageY - rect.top
+
+        Input.touch.position = new Vector2(x - Canvas.size.x / 2, Canvas.size.y / 2 - y)
+    }
+
+    public static handleTouchEnd(): void {
+        Input.isTouching = false
+    }
+
+    public static getTouch(): Touch {
+        return this.touch
     }
 
     public static reset() {

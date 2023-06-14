@@ -5,7 +5,7 @@ import { Vector2 } from "../utils/Vector2"
 
 export class Canvas {
 
-    private static canvas: HTMLCanvasElement
+    public static canvas: HTMLCanvasElement
     public static context: CanvasRenderingContext2D | null
     public static size: Vector2 = new Vector2(320, 512)
     private static sprites: Sprite[] = []

@@ -3,7 +3,7 @@ import { Time } from "./engine/system/Time"
 import { Canvas } from "./engine/system/Canvas"
 import { UIManager } from "./engine/UI/UIManager"
 import { Physic } from "./engine/system/Physic"
-import { Input } from "./engine/system/Input"
+import { Input } from "./engine/system/input/Input"
 import { Layer } from "./engine/system/Layer"
 import { GameState } from "./games/GameState"
 import { GameObject } from "./engine/system/GameObject"
@@ -41,16 +41,15 @@ export class Game {
         ImagePreload.init()
 
         ImagePreload.load(PRELOAD_IMAGES).then(()=>{
-            Input.init()
             Time.init()
             UIManager.init()
             Canvas.init('game')
+            Input.init()
             Layer.init()
             SoundManager.init()
             TweenManager.init()
             GameManager.init()
             GameManager.updateGameState(GameState.Ready)
-
             this.loop()
         })
     }
