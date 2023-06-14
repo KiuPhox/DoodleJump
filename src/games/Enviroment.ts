@@ -3,7 +3,7 @@ import { GameObject } from "../engine/system/GameObject"
 import { Vector2 } from "../engine/utils/Vector2"
 import { GameManager } from "./GameManager"
 import { GameState } from "./GameState"
-import { Player } from "./Player"
+import { Player } from "./player/Player"
 
 export class Enviroment extends GameObject{
     private player: Player

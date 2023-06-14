@@ -1,21 +1,21 @@
-import { Collider } from "../engine/components/Collider"
-import { ForceMode, RigidBody } from "../engine/components/RigidBody"
-import { Sprite } from "../engine/components/Sprite"
-import { Canvas } from "../engine/system/Canvas"
-import { GameObject } from "../engine/system/GameObject"
-import { Input } from "../engine/system/Input"
-import { Vector2 } from "../engine/utils/Vector2"
-import { SoundManager } from "./SoundManager"
-import { Spring } from "./powerup/Spring"
-import { BasePlatform } from "./platforms/BasePlatform"
-import { BrownPlatform } from "./platforms/BrownPlatform"
-import { Time } from "../engine/system/Time"
-import { GameManager } from "./GameManager"
-import { GameState } from "./GameState"
-import { WhitePlatform } from "./platforms/WhitePlatform"
-import { Tween } from "../engine/system/tween/Tween"
-import { Ease } from "../engine/system/tween/Ease"
-import { ObjectPoolManager } from "./level/ObjectPoolManager"
+import { Collider } from "../../engine/components/Collider"
+import { ForceMode, RigidBody } from "../../engine/components/RigidBody"
+import { Sprite } from "../../engine/components/Sprite"
+import { Canvas } from "../../engine/system/Canvas"
+import { GameObject } from "../../engine/system/GameObject"
+import { Vector2 } from "../../engine/utils/Vector2"
+import { SoundManager } from "../SoundManager"
+import { Spring } from "../powerup/Spring"
+import { BasePlatform } from "../platforms/BasePlatform"
+import { BrownPlatform } from "../platforms/BrownPlatform"
+import { Time } from "../../engine/system/Time"
+import { GameManager } from "../GameManager"
+import { GameState } from "../GameState"
+import { WhitePlatform } from "../platforms/WhitePlatform"
+import { Tween } from "../../engine/system/tween/Tween"
+import { Ease } from "../../engine/system/tween/Ease"
+import { ObjectPoolManager } from "../level/ObjectPoolManager"
+import { PlayerInput } from "./PlayerInput"
 
 const PLAYER_LEFT_IMAGE_PATH = 'assets/images/lik-left.png'
 const MOVE_SPEED = 2
@@ -41,6 +41,8 @@ export class Player extends GameObject{
     private isHoleTouched: boolean
     private isMonsterTouched: boolean
 
+    private playerInput: PlayerInput
+
     constructor(){
         super("Player")
         this.rigidBody = new RigidBody(this, 0.08)
@@ -59,6 +61,8 @@ export class Player extends GameObject{
         this.isMonsterTouched = false
 
         GameManager.OnGameStateChanged.subscribe(this.OnGameStateChanged)
+
+        this.playerInput = new PlayerInput()
     }
 
     public update(): void {
@@ -74,18 +78,17 @@ export class Player extends GameObject{
 
         // Control
         if (GameManager.getGameState() !== GameState.Ready && !this.isHoleTouched && !this.isMonsterTouched){
-            if (Input.getKey('KeyD') || Input.getKey('ArrowRight')){
-                this.rigidBody.velocity = new Vector2(MOVE_SPEED, this.rigidBody.velocity.y)
+            const velocityX = this.playerInput.getMovementInput() * MOVE_SPEED
+
+            this.rigidBody.velocity = new Vector2(velocityX, this.rigidBody.velocity.y)
+
+            if (velocityX > 0){
+                
                 this.sprite.flipX = true
             }
-            
-            else if (Input.getKey('KeyA') || Input.getKey('ArrowLeft')){
-                this.rigidBody.velocity = new Vector2(-MOVE_SPEED, this.rigidBody.velocity.y)
-                this.sprite.flipX = false
-            }
-            else
+            else if (velocityX < 0)
             {
-                this.rigidBody.velocity = new Vector2(0, this.rigidBody.velocity.y)
+                this.sprite.flipX = false
             }
         }
         

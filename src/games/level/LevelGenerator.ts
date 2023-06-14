@@ -1,7 +1,7 @@
 import { GameObject } from "../../engine/system/GameObject"
 import { Game } from "../../game"
 import { Enviroment } from "../Enviroment"
-import { Player } from "../Player"
+import { Player } from "../player/Player"
 import { GameState } from "../GameState"
 import { GameManager } from "../GameManager"
 import { PlatformGenerator } from "./PlatformGenerator"
