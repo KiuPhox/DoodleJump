@@ -15,10 +15,10 @@ export class RigidBody extends Component {
     public velocity: Vector2
     public isStatic: boolean
 
-    constructor(gameObject: GameObject, gravityScale: number) {
+    constructor(gameObject: GameObject, gravityScale?: number) {
         super(gameObject)
         this.name = 'RigidBody'
-        this.gravityScale = gravityScale
+        this.gravityScale = gravityScale || 1
         this.velocity = Vector2.zero
         this.isStatic = false
     }

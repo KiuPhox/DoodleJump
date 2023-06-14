@@ -10,10 +10,10 @@ export class Sprite extends Component {
     public flipY: boolean
     public alpha: number
 
-    constructor(gameObject: GameObject, _order: number) {
+    constructor(gameObject: GameObject, _order?: number) {
         super(gameObject)
 
-        this.order = _order
+        this.order = _order || 0
         this.name = 'Sprite'
         this.flipX = false
         this.flipY = false

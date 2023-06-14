@@ -43,8 +43,9 @@ export class GameObject {
         }
     }
 
-    public getComponent(name: string): Component {
-        return this.components[name]
+    public getComponent<T extends Component>(componentType: new (gameObject: this) => T): T {
+        const componentName = componentType.name
+        return this.components[componentName] as T
     }
 
     public executeStart(): void {

@@ -35,10 +35,6 @@ export class ObstacleGenerator {
         }
     }
 
-    private releaseObstacle(obstacle: GameObject): void {
-        // Release the obstacle
-    }
-
     public static reset(): void{
         for (const obstacle of this.obstacles){
             ObjectPoolManager.releaseObstacle(obstacle)

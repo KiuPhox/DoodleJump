@@ -9,16 +9,15 @@ export class ImagePreload{
         const promises: Promise<void>[] = []
       
         for (const path of imagePaths) {
-          const promise = new Promise<void>((resolve) => {
-            const image = new Image()
-            image.src = path
-            this.images[path] = image
-            image.onload = () => {
-              resolve()
-            }
-          })
-      
-          promises.push(promise)
+            const promise = new Promise<void>((resolve) => {
+                const image = new Image()
+                image.src = path
+                this.images[path] = image
+                image.onload = () => {
+                    resolve()
+                }
+            })
+            promises.push(promise)
         }
       
         await Promise.all(promises)

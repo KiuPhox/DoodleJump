@@ -28,7 +28,7 @@ export class SoundManager{
 
     public static playJumpSound(): void {
         const jumpAudio = new Audio(JUMP_AUDIO_PATH)
-        
+
         jumpAudio.volume = 0.5
         jumpAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
         jumpAudio.play()
@@ -75,7 +75,6 @@ export class SoundManager{
         this.holeAudio.play()
     }
 
-
     public static playBreakSound(): void {
         const breakAudio = new Audio(BREAK_AUDIO_PATH)
         
@@ -83,6 +82,4 @@ export class SoundManager{
         breakAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
         breakAudio.play()
     }
-
-    
 }

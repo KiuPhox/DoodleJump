@@ -142,7 +142,7 @@ export class Player extends GameObject{
                 }
             }
         }
-        else if (collider.gameObject.name === 'Spring' && this.isFalling){
+        else if (collider.gameObject.name === 'Spring' && this.isFalling && !this.isMonsterTouched){
             (collider.gameObject as Spring).activeSpring()
 
             this.jump(SPRING_FORCE)
@@ -150,14 +150,14 @@ export class Player extends GameObject{
         }
         
         if (!this.isImmortal){
-            if (collider.gameObject.name === 'Hat'){
+            if (collider.gameObject.name === 'Hat' && !this.isMonsterTouched){
                 this.hatTimer = HAT_DURATION
     
                 collider.gameObject.setActive(false)
                 this.rigidBody.velocity = Vector2.zero
                 SoundManager.playHatSound()
             }
-            else if (collider.gameObject.name === 'Jetpack'){
+            else if (collider.gameObject.name === 'Jetpack' && !this.isMonsterTouched){
                 this.jetpackTimer = JETPACK_DURATION
     
                 collider.gameObject.setActive(false)

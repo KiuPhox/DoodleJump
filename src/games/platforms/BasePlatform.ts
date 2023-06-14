@@ -24,7 +24,7 @@ export class BasePlatform extends GameObject{
     public addPowerUp(gameObject: GameObject): void {
         this.setChild(gameObject)
         
-        const sprite = gameObject.getComponent('Sprite') as Sprite
+        const sprite = gameObject.getComponent(Sprite)
 
         gameObject.transform.localPosition = new Vector2(
             Utils.RandomFloat(-this.sprite.width / 2 + sprite.width / 2, this.sprite.width / 2 - sprite.width / 2),
