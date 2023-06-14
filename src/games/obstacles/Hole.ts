@@ -3,7 +3,7 @@ import { Sprite } from "../../engine/components/Sprite"
 import { Canvas } from "../../engine/system/Canvas"
 import { GameObject } from "../../engine/system/GameObject"
 import { Vector2 } from "../../engine/utils/Vector2"
-import { LevelGenerator } from "../LevelGenerator"
+import { ObjectPoolManager } from "../level/ObjectPoolManager"
 
 export class Hole extends GameObject{
     private sprite: Sprite
@@ -25,7 +25,7 @@ export class Hole extends GameObject{
     public update(): void {
         super.update()
         if (this.transform.position.y + this.sprite.height / 2 < -Canvas.size.y / 2){
-            LevelGenerator.holePools.release(this)
+            ObjectPoolManager.holePool.release(this)
         }
 
     }

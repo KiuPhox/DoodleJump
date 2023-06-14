@@ -8,7 +8,7 @@ import { Layer } from "./engine/system/Layer"
 import { GameState } from "./games/GameState"
 import { GameObject } from "./engine/system/GameObject"
 import { SoundManager } from "./games/SoundManager"
-import { TweenManager } from "./engine/system/Tween/TweenManager"
+import { TweenManager } from "./engine/system/tween/TweenManager"
 import { ImagePreload } from "./engine/loader/ImagePreload"
 
 const FRAME_RATE = 300

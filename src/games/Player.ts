@@ -12,10 +12,10 @@ import { BrownPlatform } from "./platforms/BrownPlatform"
 import { Time } from "../engine/system/Time"
 import { GameManager } from "./GameManager"
 import { GameState } from "./GameState"
-import { LevelGenerator } from "./LevelGenerator"
 import { WhitePlatform } from "./platforms/WhitePlatform"
-import { Tween } from "../engine/system/Tween/Tween"
-import { Ease } from "../engine/system/Tween/Ease"
+import { Tween } from "../engine/system/tween/Tween"
+import { Ease } from "../engine/system/tween/Ease"
+import { ObjectPoolManager } from "./level/ObjectPoolManager"
 
 const PLAYER_LEFT_IMAGE_PATH = 'assets/images/lik-left.png'
 const MOVE_SPEED = 2
@@ -130,7 +130,7 @@ export class Player extends GameObject{
                 this.jump(JUMP_FORCE)
             
                 if (collider.gameObject.name == 'WhitePlatform'){
-                    LevelGenerator.whitePlatformsPools.release(collider.gameObject as WhitePlatform)
+                    ObjectPoolManager.whitePlatformsPool.release(collider.gameObject as WhitePlatform)
                     SoundManager.playWhiteSound()
                 }
                 else

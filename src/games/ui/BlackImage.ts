@@ -1,6 +1,6 @@
 import { Sprite } from "../../engine/components/Sprite"
 import { GameObject } from "../../engine/system/GameObject"
-import { Tween } from "../../engine/system/Tween/Tween"
+import { Tween } from "../../engine/system/tween/Tween"
 import { GameManager } from "../GameManager"
 import { GameState } from "../GameState"
 

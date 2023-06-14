@@ -4,7 +4,7 @@ import { Component } from "./Component"
 import { ImagePreload } from "../loader/ImagePreload"
 
 export class Sprite extends Component {
-    private _image: HTMLImageElement
+    public image: HTMLImageElement
     public order: number
     public flipX: boolean
     public flipY: boolean
@@ -26,19 +26,17 @@ export class Sprite extends Component {
         const image = ImagePreload.getImage(path)
 
         if (image === undefined){
-            this._image = new Image()
-            this._image.src = path
+            this.image = new Image()
+            this.image.src = path
         }
         else
         {
-            this._image = image
+            this.image = image
         }
         
     }
 
-    get width(): number { return this._image.width }
+    get width(): number { return this.image.width }
 
-    get height(): number { return this._image.height }
-
-    get image(): HTMLImageElement { return this._image }
+    get height(): number { return this.image.height }
 }

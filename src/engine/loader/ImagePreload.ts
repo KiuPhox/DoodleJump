@@ -22,7 +22,7 @@ export class ImagePreload{
         }
       
         await Promise.all(promises)
-        // All images have finished loading
+
         console.log('All images have been loaded')
     }
 
