@@ -101,7 +101,7 @@ export class PlatformGenerator {
         this.reset()
         const firstPlatform = ObjectPoolManager.basePlatformsPool.get()
         firstPlatform.transform.position = new Vector2(-80, -200)
-        this.platformSprite = (firstPlatform.getComponent(Sprite))
+        this.platformSprite = (firstPlatform.getComponent('Sprite') as Sprite)
     }
 
     public static playingStateSpawn(): void{
@@ -111,7 +111,7 @@ export class PlatformGenerator {
         // Initial Platforms
         const firstPlatform = ObjectPoolManager.basePlatformsPool.get()
         firstPlatform.transform.position = new Vector2(0, -200)
-        this.platformSprite = firstPlatform.getComponent(Sprite)
+        this.platformSprite = firstPlatform.getComponent('Sprite') as Sprite
         this.previousPlatformGenerated = firstPlatform
 
         for (let i = 0; i < INITIAL_PLATFORMS_COUNT; i++){

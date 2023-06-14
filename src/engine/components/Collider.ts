@@ -21,7 +21,7 @@ export class Collider extends Component {
     }
 
     get size(): Vector2 {
-        const sprite = this.gameObject.getComponent(Sprite)
+        const sprite = this.gameObject.getComponent('Sprite') as Sprite
         return new Vector2(sprite.width * this.scale.x, sprite.height * this.scale.y)
     }
 
@@ -35,12 +35,12 @@ export class Collider extends Component {
         if (this.isTrigger) {
             this.OnTriggerStay.invoke(collider)
         } else {
-            const thisRb = this.gameObject.getComponent(RigidBody)
+            const thisRb = this.gameObject.getComponent('RigidBody') as RigidBody
             if (!thisRb) return
 
             if (thisRb.isStatic) return
 
-            const otherRb = collider.gameObject.getComponent(RigidBody)
+            const otherRb = collider.gameObject.getComponent('RigidBody') as RigidBody
 
             const otherVelocity = otherRb ? otherRb.velocity : Vector2.zero
 

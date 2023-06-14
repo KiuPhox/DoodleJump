@@ -3,8 +3,6 @@ import { Input } from "../../engine/system/input/Input"
 
 export class PlayerInput {
     public getMovementInput(): number {
-
-
         if (Input.getKey('KeyD') || Input.getKey('ArrowRight')) {
             return 1
         } else if (Input.getKey('KeyA') || Input.getKey('ArrowLeft')) {

@@ -50,6 +50,7 @@ export class Game {
             TweenManager.init()
             GameManager.init()
             GameManager.updateGameState(GameState.Ready)
+
             this.loop()
         })
     }

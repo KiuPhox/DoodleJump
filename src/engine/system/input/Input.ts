@@ -13,8 +13,9 @@ export class Input {
 
     public static init(): void {
         const canvas = Canvas.canvas
-        canvas.addEventListener('keydown', (event: KeyboardEvent) => this.handleKeyDown(event))
-        canvas.addEventListener('keyup', (event: KeyboardEvent) => this.handleKeyUp(event))
+        
+        document.addEventListener('keydown', (event: KeyboardEvent) => this.handleKeyDown(event))
+        document.addEventListener('keyup', (event: KeyboardEvent) => this.handleKeyUp(event))
         canvas.addEventListener('mousedown', () => this.handleMouseDown())
         canvas.addEventListener('mouseup', () => this.handleMouseUp())
         canvas.addEventListener('touchstart', this.handleTouchStart)

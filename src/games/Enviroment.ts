@@ -14,7 +14,7 @@ export class Enviroment extends GameObject{
         super('Enviroment')
         this.player = player
 
-        this.playerRb = this.player.getComponent(RigidBody)
+        this.playerRb = this.player.getComponent('RigidBody') as RigidBody
         this.rigidBody = new RigidBody(this, 0.08)
 
         this.addComponent(this.rigidBody)
