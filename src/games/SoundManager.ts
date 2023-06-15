@@ -18,37 +18,52 @@ export class SoundManager{
     private static fallingAudio: HTMLAudioElement
     private static monsterHitAudio: HTMLAudioElement
     private static holeAudio: HTMLAudioElement
+    private static jumpAudio: HTMLAudioElement
+    private static springAudio: HTMLAudioElement
+    private static breakAudio: HTMLAudioElement
+    private static whiteAudio: HTMLAudioElement
+    private static jumpOnMonsterAudio: HTMLAudioElement
 
-    public static init():void{
-        this.hatAudio = new Audio(HAT_AUDIO_PATH)
-        this.jetpackAudio = new Audio(JETPACK_AUDIO_PATH)
-        this.fallingAudio = new Audio(FALLING_AUDIO_PATH)
-        this.monsterHitAudio = new Audio(MONSTER_HIT_AUDIO_PATH)
-        this.holeAudio = new Audio(HOLE_AUDIO_PATH)
+    public static async init() :Promise<void> {
+
+        this.jumpAudio = await this.loadAudio(JUMP_AUDIO_PATH)
+        this.hatAudio = await this.loadAudio(HAT_AUDIO_PATH)
+        this.jetpackAudio = await this.loadAudio(JETPACK_AUDIO_PATH)
+        this.fallingAudio = await this.loadAudio(FALLING_AUDIO_PATH)
+        this.monsterHitAudio = await this.loadAudio(MONSTER_HIT_AUDIO_PATH)
+        this.holeAudio = await this.loadAudio(HOLE_AUDIO_PATH)
+        this.springAudio = await this.loadAudio(SPRING_AUDIO_PATH)
+        this.breakAudio = await this.loadAudio(BREAK_AUDIO_PATH)
+        this.whiteAudio = await this.loadAudio(WHITE_AUDIO_PATH)
+        this.jumpOnMonsterAudio = await this.loadAudio(JUMP_ON_MONSTER_AUDIO_PATH)
+    }
+
+    private static async loadAudio(audioPath: string): Promise<HTMLAudioElement> {
+        const response = await fetch(audioPath)
+        const audioBlob = await response.blob()
+        const audioURL = URL.createObjectURL(audioBlob)
+        const audio = new Audio(audioURL)
+        return audio
     }
 
     public static playJumpSound(): void {
-        const jumpAudio = new Audio(JUMP_AUDIO_PATH)
-
-        jumpAudio.volume = 0.5
-        jumpAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
-        jumpAudio.play()
+        this.jumpAudio.volume = 0.5
+        this.jumpAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
+        this.jumpAudio.play().catch(()=>{
+            //
+        })
     }
 
-    public static playSpringSound(): void {
-        const springAudio = new Audio(SPRING_AUDIO_PATH)
-        
-        springAudio.volume = 0.5
-        springAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
-        springAudio.play()
+    public static playSpringSound(): void {        
+        this.springAudio.volume = 0.5
+        this.springAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
+        this.springAudio.play()
     }
 
-    public static playWhiteSound(): void {
-        const whiteAudio = new Audio(WHITE_AUDIO_PATH)
-        
-        whiteAudio.volume = 0.4
-        whiteAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
-        whiteAudio.play()
+    public static playWhiteSound(): void {        
+        this.whiteAudio.volume = 0.4
+        this.whiteAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
+        this.whiteAudio.play()
     }
 
     public static playHatSound(): void{
@@ -72,11 +87,9 @@ export class SoundManager{
     }
 
     public static playJumpOnMonsterSound(): void{
-        const jumpOnMonsterAudio = new Audio(JUMP_ON_MONSTER_AUDIO_PATH)
-
-        jumpOnMonsterAudio.volume = 0.2
-        jumpOnMonsterAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
-        jumpOnMonsterAudio.play()
+        this.jumpOnMonsterAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
+        this.jumpOnMonsterAudio.play()
+        this.jumpOnMonsterAudio.volume = 0.2
     }
 
     public static playHoleSound(): void{
@@ -85,10 +98,8 @@ export class SoundManager{
     }
 
     public static playBreakSound(): void {
-        const breakAudio = new Audio(BREAK_AUDIO_PATH)
-        
-        breakAudio.volume = 0.5
-        breakAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
-        breakAudio.play()
+        this.breakAudio.volume = 0.5
+        this.breakAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
+        this.breakAudio.play()
     }
 }

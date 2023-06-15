@@ -17,7 +17,7 @@ export class SceneManager {
 
     public static registerScene(scene: Scene): void {
         if (this.scenes.length === 0) {
-            scene.active = true
+            scene.setActive(true)
         }
         this.scenes.push(scene)
     }

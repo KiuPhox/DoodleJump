@@ -18,7 +18,7 @@ export class ScoreManager extends GameObject{
         this.enviroment = Game.Find('Enviroment') as Enviroment
         this.scoreText = new Text()
         this.scoreText.font = '600 32px DoodleJump'
-        this.scoreText.transform.position = new Vector2(-150, -230)
+        this.scoreText.transform.position = new Vector2(-150, 230)
         this.scoreText.name = 'ScoreText'
 
         const gameplayScene = SceneManager.getSceneByName('GameplayScene')

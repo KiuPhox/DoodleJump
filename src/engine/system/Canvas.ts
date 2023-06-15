@@ -70,7 +70,11 @@ export class Canvas {
         for (const text of this.texts) {
             if (!text.active) continue
             Canvas.context.font = text.font
-            Canvas.context.fillText(text.text, text.transform.position.x + this.size.x / 2, text.transform.position.y + this.size.y/2)
+            Canvas.context.fillText(
+                text.text, 
+                text.transform.position.x + this.size.x / 2, 
+                -text.transform.position.y + this.size.y / 2
+            )
         }
     }
 

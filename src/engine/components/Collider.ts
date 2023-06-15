@@ -29,7 +29,7 @@ export class Collider extends Component {
         super.update()
     }
 
-    public colliding(collider: Collider) {
+    public colliding(collider: Collider): void {
         if (!collider.gameObject.active) return
 
         if (this.isTrigger) {

@@ -4,7 +4,6 @@ import { Component } from "../components/Component"
 import { Transform } from "../components/Transform"
 import { Scene } from "./scene/Scene"
 
-
 export class GameObject {
     public scene: Scene
     public name: string
@@ -27,19 +26,18 @@ export class GameObject {
         this.dontDestroyOnLoad = false
 
         this.addComponent(this.transform)
-
         Game.registerGameObject(this)
 
-
-        if (this.parent?.scene){ 
+        if (this.parent?.scene) {
             this.parent.scene.registerGameObject(this)
         }
     }
 
     public update(): void {
-        for (const key in this.components) {
-            if (this.active) {
-                this.components[key].update()
+        for (const componentKey in this.components) {
+            const component = this.components[componentKey]
+            if (this.isActive) {
+                component.update()
             }
         }
     }
@@ -47,80 +45,99 @@ export class GameObject {
     public addComponent(component: Component): void {
         this.components[component.name] = component
 
-        if (component.name === 'Collider') {
-            (component as Collider).OnCollisionStay.subscribe(this.OnCollisionStay);
-            (component as Collider).OnTriggerStay.subscribe(this.OnTriggerStay)
+        if (component instanceof Collider) {
+            component.OnCollisionStay.subscribe(this.OnCollisionStay)
+            component.OnTriggerStay.subscribe(this.OnTriggerStay)
         }
     }
 
-    public getComponent(name: string): Component {
+    public getComponent(name: string): Component | undefined {
         return this.components[name]
     }
 
-    // public getComponent<T extends Component>(componentType: new (gameObject: this) => T): T {
-    //     const componentName = componentType.name
-    //     return this.components[componentName] as T
-    // }
-
     public executeStart(): void {
         this.start()
-        for (let i = 0; i < this.children.length; i++) {
-            this.children[i].executeStart()
+        for (const child of this.children) {
+            child.executeStart()
         }
     }
 
     public executeUpdate(): void {
-        if (!this.active) return
+        if (!this.isActive) {
+            return
+        }
         this.update()
-        for (let i = 0; i < this.children.length; i++) {
-            this.children[i].executeUpdate()
+        for (const child of this.children) {
+            child.executeUpdate()
         }
     }
 
-    public setChild(childNode: GameObject) {
-        if (this.children.includes(childNode)) return
+    public setChild(childNode: GameObject): void {
+        if (this.children.includes(childNode)) {
+            return
+        }
         this.children.push(childNode)
         childNode.parent = this
 
-        this.scene.registerGameObject(childNode)
+        if (this.scene) {
+            this.scene.registerGameObject(childNode)
+        }
     }
 
-    public removeChild(childNode: GameObject){
-        if (!this.children.includes(childNode)) return
-        this.children.splice(this.children.indexOf(childNode), 1)
+    public removeChild(childNode: GameObject): void {
+        const index = this.children.indexOf(childNode)
+        if (index !== -1) {
+            this.children.splice(index, 1)
+        }
     }
-    public setParent(parentNode: GameObject) {
+
+    public setParent(parentNode: GameObject): void {
         parentNode.setChild(this)
     }
 
     public setActive(value: boolean): void {
         this.isActive = value
 
-        if (this.active) this.onEnabled()
-        else (this.onDisabled())
+        if (this.isActive) {
+            this.onEnabled()
+        } else {
+            this.onDisabled()
+        }
     }
 
-    get active(): boolean { return this.isActive && this.scene?.active}
-    
-    public start(): void { /**/ }
-    public onEnabled(): void { /**/ }
-    public onDisabled(): void { /**/ }
-    public OnCollisionStay(collider: Collider): void { collider }
-    public OnTriggerStay(collider: Collider): void { collider }
+    public get active(): boolean {
+        return this.isActive && this.scene?.active
+    }
+
+    public start(): void {
+        // Implementation for the start method
+    }
+
+    public onEnabled(): void {
+        // Implementation for the onEnabled method
+    }
+
+    public onDisabled(): void {
+        // Implementation for the onDisabled method
+    }
+
+    public OnCollisionStay(collider: Collider): void {
+        // Implementation for the OnCollisionStay method
+    }
+
+    public OnTriggerStay(collider: Collider): void {
+        // Implementation for the OnTriggerStay method
+    }
 
     public destroy(): void {
-        // Remove the GameObject from its parent (if any)
         if (this.parent) {
             this.parent.removeChild(this)
         }
 
-        // Destroy all child GameObjects
         for (const child of this.children) {
             child.destroy()
         }
 
-        // Unregister the GameObject from the Game
         Game.unregisterGameObject(this)
     }
-
 }

@@ -1,6 +1,9 @@
 import { Sprite } from "../../engine/components/Sprite"
 import { GameObject } from "../../engine/system/GameObject"
 import { Scene } from "../../engine/system/scene/Scene"
+import { Ease } from "../../engine/system/tween/Ease"
+import { LoopType } from "../../engine/system/tween/LoopType"
+import { Tween } from "../../engine/system/tween/Tween"
 import { Vector2 } from "../../engine/utils/Vector2"
 import Background from "../Background"
 import { GameManager } from "../GameManager"
@@ -48,6 +51,10 @@ export class MainMenuScene extends Scene {
         this.registerGameObject(platform)
         this.registerGameObject(background)
         this.registerGameObject(blackImage)
+
+        // Bounce the title infinte
+        new Tween(this.title.transform, 0.5).to({position: Vector2.zero})
+        .setLoops(-1, LoopType.Yoyo).setEasing(Ease.OutBounce)
 
         GameManager.OnGameStateChanged.subscribe(this.OnGameStateChanged)
     }

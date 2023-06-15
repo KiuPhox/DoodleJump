@@ -34,7 +34,7 @@ export class EaseManager{
             case Ease.InQuart:
                 return t * t * t * t
             case Ease.OutQuart:
-                return -((t - 1) * (t - 1) * (t - 1) - 1)
+                return 1 - Math.pow(1 - t, 4)
             case Ease.InOutQuart:
                 return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2
             case Ease.InQuint:

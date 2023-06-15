@@ -1,4 +1,5 @@
 import { Collider } from "../../engine/components/Collider"
+// import { RigidBody } from "../../engine/components/RigidBody"
 import { Sprite } from "../../engine/components/Sprite"
 import { Canvas } from "../../engine/system/Canvas"
 import { GameObject } from "../../engine/system/GameObject"
@@ -12,6 +13,7 @@ const MONSTER_IMAGE_PATHS = [
 
 export class Monster extends GameObject{
     public sprite: Sprite
+    //private rigidBody: RigidBody
 
     constructor(){
         super('Monster')
@@ -22,8 +24,11 @@ export class Monster extends GameObject{
         this.sprite = new Sprite(this, 2)
         this.sprite.setSprite(MONSTER_IMAGE_PATHS[Utils.RandomInt(0, MONSTER_IMAGE_PATHS.length - 1)])
 
+        //this.rigidBody = new RigidBody(this, 0)
+
         this.addComponent(collider)
         this.addComponent(this.sprite)
+        //this.addComponent(this.rigidBody)
     }
 
     public update(): void {
@@ -31,6 +36,5 @@ export class Monster extends GameObject{
         if (this.transform.position.y + this.sprite.height / 2 < -Canvas.size.y / 2){
             ObjectPoolManager.monsterPool.release(this)
         }
-
     }
 }

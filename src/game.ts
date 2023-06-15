@@ -12,6 +12,7 @@ import { ImagePreload } from "./engine/loader/ImagePreload"
 import { MainMenuScene } from "./games/scene/MainMenuScene"
 import { SceneManager } from "./engine/system/scene/SceneManager"
 import { GameplayScene } from "./games/scene/GameplayScene"
+import { GameState } from "./games/GameState"
 
 const FRAME_RATE = 300
 
@@ -42,30 +43,30 @@ export class Game {
     constructor() {
         ImagePreload.init()
 
-        ImagePreload.load(PRELOAD_IMAGES).then(()=>{
-            Time.init()
-            UIManager.init()
-            Canvas.init('game')
-            Input.init()
-            Layer.init()
-            SoundManager.init()
-            TweenManager.init()
-
-            // GameManager.updateGameState(GameState.Ready)
-
-            Layer.add('Background')
-            Physic.setInteractiveLayer('Background', 'Background', false)
-
-            GameManager.init()
-
-            SceneManager.init()
-
-            new MainMenuScene()
-            new GameplayScene()
-
-
-
-            this.loop()
+        SoundManager.init().then(()=>{
+            ImagePreload.load(PRELOAD_IMAGES).then(()=>{
+                Time.init()
+                UIManager.init()
+                Canvas.init('game')
+                Input.init()
+                Layer.init()
+    
+                TweenManager.init()
+    
+                Layer.add('Background')
+                Physic.setInteractiveLayer('Background', 'Background', false)
+    
+                GameManager.init()
+    
+                SceneManager.init()
+    
+                GameManager.updateGameState(GameState.Ready)
+    
+                new MainMenuScene()
+                new GameplayScene()
+    
+                this.loop()
+            })
         })
     }
 

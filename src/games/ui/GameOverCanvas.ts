@@ -1,12 +1,16 @@
 import { Text } from "../../engine/UI/Text"
 import { GameObject } from "../../engine/system/GameObject"
 import { SceneManager } from "../../engine/system/scene/SceneManager"
+import { Ease } from "../../engine/system/tween/Ease"
+import { Tween } from "../../engine/system/tween/Tween"
 import { Vector2 } from "../../engine/utils/Vector2"
 import { GameManager } from "../GameManager"
 import { GameState } from "../GameState"
 import { PlayButton } from "./PlayButton"
 import { ReturnMenuButton } from "./ReturnMenuButton"
 import { ScoreManager } from "./ScoreManager"
+
+const INITIAL_POSITION = new Vector2(0, -500)
 
 export class GameOverCanvas extends GameObject {
     private playButton: PlayButton
@@ -29,8 +33,8 @@ export class GameOverCanvas extends GameObject {
         this.scoreText = new Text()
         this.highScoreText = new Text()
 
-        this.scoreText.transform.position = new Vector2(-100, -10)
-        this.highScoreText.transform.position = new Vector2(-125, 30)
+        this.scoreText.transform.position = new Vector2(-100, 30)
+        this.highScoreText.transform.position = new Vector2(-125, -10)
 
         this.scoreText.font = '600 30px DoodleJump'
         this.highScoreText.font = '600 30px DoodleJump'
@@ -40,6 +44,8 @@ export class GameOverCanvas extends GameObject {
         this.scoreText.setParent(this)
         this.highScoreText.setParent(this)
 
+        this.transform.position = INITIAL_POSITION
+        
 
         GameManager.OnGameStateChanged.subscribe(this.OnGameStateChanged)
     }
@@ -59,13 +65,14 @@ export class GameOverCanvas extends GameObject {
                 break
             case GameState.Playing:
                 this.setActive(false)
+                this.transform.position = INITIAL_POSITION
                 break
             case GameState.GameOver:
                 this.setActive(true)
+                new Tween(this.transform, 1).to({'position': Vector2.zero}).setEasing(Ease.OutQuart)
                 this.scoreText.text = 'your score: ' + ScoreManager.getScore()
                 this.highScoreText.text = 'your high score: ' + ScoreManager.getHighScore()
                 break
-
         }
     }
 }
