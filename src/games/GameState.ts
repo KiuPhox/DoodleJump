@@ -1,6 +1,6 @@
-export enum GameState{
+export enum GameState {
     Ready,
     Playing,
     GameOver,
-    Pause
+    Pause,
 }

@@ -1,12 +1,12 @@
-import { GameObject } from "../GameObject"
-import { SceneManager } from "./SceneManager"
+import { GameObject } from '../GameObject'
+import { SceneManager } from './SceneManager'
 
-export class Scene{
+export class Scene {
     public name: string
     public gameObjects: GameObject[]
     public active: boolean
 
-    constructor(name: string){
+    constructor(name: string) {
         this.name = name
         this.gameObjects = []
         this.active = false
@@ -14,14 +14,14 @@ export class Scene{
         SceneManager.registerScene(this)
     }
 
-    public update(){
+    public update() {
         if (!this.active) return
-        for (const gameObject of this.gameObjects){
+        for (const gameObject of this.gameObjects) {
             gameObject.update()
         }
     }
 
-    public setActive(active: boolean){
+    public setActive(active: boolean) {
         this.active = active
     }
 
@@ -30,7 +30,7 @@ export class Scene{
         gameObject.scene = this
     }
 
-    public unregisterGameObject(gameObject: GameObject): void{
+    public unregisterGameObject(gameObject: GameObject): void {
         this.gameObjects.slice(this.gameObjects.indexOf(gameObject), 1)
     }
 }

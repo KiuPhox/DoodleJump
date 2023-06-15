@@ -16,24 +16,20 @@ export class Utils {
         return start + (end - start) * t
     }
 
-    public static WeightPick(weights: number[]) : number
-    {
+    public static WeightPick(weights: number[]): number {
         let accumlateWeights = 0
 
-        const anotherWeights : number[] = []
-        
-        for (let i = 0; i < weights.length; i++)
-        {
+        const anotherWeights: number[] = []
+
+        for (let i = 0; i < weights.length; i++) {
             accumlateWeights += weights[i]
             anotherWeights[i] = accumlateWeights
         }
 
         const r = this.RandomFloat(0, 1) * accumlateWeights
 
-        for (let i = 0; i < anotherWeights.length; i++)
-        {
-            if (anotherWeights[i] >= r)
-            {
+        for (let i = 0; i < anotherWeights.length; i++) {
+            if (anotherWeights[i] >= r) {
                 return i
             }
         }

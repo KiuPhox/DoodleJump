@@ -1,6 +1,6 @@
-import { Sprite } from "../components/Sprite"
-import { GameObject } from "../system/GameObject"
-import { UIManager } from "./UIManager"
+import { Sprite } from '../components/Sprite'
+import { GameObject } from '../system/GameObject'
+import { UIManager } from './UIManager'
 
 export abstract class Button extends GameObject {
     protected sprite: Sprite
@@ -13,8 +13,12 @@ export abstract class Button extends GameObject {
         UIManager.add(this)
     }
 
-    get width(): number { return this.sprite.width * this.transform.scale }
-    get height(): number { return this.sprite.height * this.transform.scale }
+    get width(): number {
+        return this.sprite.width * this.transform.scale
+    }
+    get height(): number {
+        return this.sprite.height * this.transform.scale
+    }
 
     abstract onClick(): void
 }

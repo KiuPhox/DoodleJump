@@ -1,15 +1,15 @@
-export class ImagePreload{
-    private static images: {[key: string]: HTMLImageElement} = {}
+export class ImagePreload {
+    private static images: { [key: string]: HTMLImageElement } = {}
 
-    public static init(){
+    public static init() {
         this.images = {}
     }
 
     public static async load(imagePaths: string[]): Promise<void> {
         const promises: Promise<void>[] = []
-      
-        for (const path of imagePaths) {
-            const promise = new Promise<void>((resolve) => {
+
+        const preloadImages = (path: string) => {
+            return new Promise<void>((resolve) => {
                 const image = new Image()
                 image.src = path
                 this.images[path] = image
@@ -17,9 +17,12 @@ export class ImagePreload{
                     resolve()
                 }
             })
-            promises.push(promise)
         }
-      
+
+        for (const path of imagePaths) {
+            promises.push(preloadImages(path))
+        }
+
         await Promise.all(promises)
 
         console.log('All images have been loaded')
@@ -29,4 +32,3 @@ export class ImagePreload{
         return this.images[path]
     }
 }
-

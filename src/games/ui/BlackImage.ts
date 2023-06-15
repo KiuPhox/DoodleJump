@@ -1,15 +1,15 @@
-import { Sprite } from "../../engine/components/Sprite"
-import { GameObject } from "../../engine/system/GameObject"
-import { Tween } from "../../engine/system/tween/Tween"
-import { GameManager } from "../GameManager"
-import { GameState } from "../GameState"
+import { Sprite } from '../../engine/components/Sprite'
+import { GameObject } from '../../engine/system/GameObject'
+import { Tween } from '../../engine/system/tween/Tween'
+import { GameManager } from '../GameManager'
+import { GameState } from '../GameState'
 
 const FADE_DURATION = 1
 
 export class BlackImage extends GameObject {
     private sprite: Sprite
 
-    constructor(){
+    constructor() {
         super('BlackImage')
 
         this.sprite = new Sprite(this, 0)
@@ -21,10 +21,10 @@ export class BlackImage extends GameObject {
         super.update()
     }
 
-    public show(): void{
-        new Tween(this.sprite, FADE_DURATION).to({'alpha': 1}).onComplete(()=>{
+    public show(): void {
+        new Tween(this.sprite, FADE_DURATION).to({ alpha: 1 }).onComplete(() => {
             GameManager.updateGameState(GameState.Playing)
-            new Tween(this.sprite, 0).to({'alpha': 0})
+            new Tween(this.sprite, 0).to({ alpha: 0 })
         })
     }
 }

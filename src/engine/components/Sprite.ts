@@ -1,7 +1,7 @@
-import { GameObject } from "../system/GameObject"
-import { Canvas } from "../system/Canvas"
-import { Component } from "./Component"
-import { ImagePreload } from "../loader/ImagePreload"
+import { GameObject } from '../system/GameObject'
+import { Canvas } from '../system/Canvas'
+import { Component } from './Component'
+import { ImagePreload } from '../loader/ImagePreload'
 
 export class Sprite extends Component {
     public image: HTMLImageElement
@@ -25,18 +25,19 @@ export class Sprite extends Component {
     public setSprite(path: string) {
         const image = ImagePreload.getImage(path)
 
-        if (image === undefined){
+        if (image === undefined) {
             this.image = new Image()
             this.image.src = path
-        }
-        else
-        {
+        } else {
             this.image = image
         }
-        
     }
 
-    get width(): number { return this.image.width }
+    get width(): number {
+        return this.image.width
+    }
 
-    get height(): number { return this.image.height }
+    get height(): number {
+        return this.image.height
+    }
 }

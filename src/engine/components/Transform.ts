@@ -1,6 +1,6 @@
-import { GameObject } from "../system/GameObject"
-import { Vector2 } from "../utils/Vector2"
-import { Component } from "./Component"
+import { GameObject } from '../system/GameObject'
+import { Vector2 } from '../utils/Vector2'
+import { Component } from './Component'
 
 export class Transform extends Component {
     private worldPosition: Vector2
@@ -8,7 +8,7 @@ export class Transform extends Component {
     public rotation: number
     public scale: number
 
-    constructor(gameObject: GameObject){
+    constructor(gameObject: GameObject) {
         super(gameObject)
         this.name = 'Transform'
         this.worldPosition = Vector2.zero
@@ -18,13 +18,15 @@ export class Transform extends Component {
     }
 
     update(): void {
-        if (this.gameObject.parent !== null){
+        if (this.gameObject.parent !== null) {
             this.position = this.gameObject.parent.transform.position.add(this.localPosition)
         }
     }
-    
-    set position(value: Vector2){
-        this.localPosition = value.sub(this.gameObject.parent? this.gameObject.parent.transform.position: Vector2.zero)
+
+    set position(value: Vector2) {
+        this.localPosition = value.sub(
+            this.gameObject.parent ? this.gameObject.parent.transform.position : Vector2.zero
+        )
         this.worldPosition = value
     }
 

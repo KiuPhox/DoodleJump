@@ -1,8 +1,8 @@
-import { Game } from "../../game"
-import { Collider } from "../components/Collider"
-import { Component } from "../components/Component"
-import { Transform } from "../components/Transform"
-import { Scene } from "./scene/Scene"
+import { Game } from '../../game'
+import { Collider } from '../components/Collider'
+import { Component } from '../components/Component'
+import { Transform } from '../components/Transform'
+import { Scene } from './scene/Scene'
 
 export class GameObject {
     public scene: Scene

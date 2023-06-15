@@ -1,19 +1,19 @@
-import { Vector2 } from "../../utils/Vector2"
-import { Canvas } from "../Canvas"
-import { Touch } from "./Touch"
+import { Vector2 } from '../../utils/Vector2'
+import { Canvas } from '../Canvas'
+import { Touch } from './Touch'
 
 export class Input {
     private static previousKeyStates: Set<string> = new Set<string>()
     private static heldKeyStates: Set<string> = new Set<string>()
     private static isHeld: boolean
     private static isMouseDown: boolean
-    
+
     private static touch: Touch
     public static isTouching: boolean
 
     public static init(): void {
         const canvas = Canvas.canvas
-        
+
         document.addEventListener('keydown', (event: KeyboardEvent) => this.handleKeyDown(event))
         document.addEventListener('keyup', (event: KeyboardEvent) => this.handleKeyUp(event))
         canvas.addEventListener('mousedown', () => this.handleMouseDown())

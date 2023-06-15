@@ -1,4 +1,4 @@
-import { Physic } from "./Physic"
+import { Physic } from './Physic'
 
 export class Layer {
     public static layers: string[] = []

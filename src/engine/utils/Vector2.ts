@@ -27,19 +27,25 @@ export class Vector2 {
         return new Vector2(0, 1)
     }
 
-    static get left(): Vector2{
+    static get left(): Vector2 {
         return new Vector2(-1, 0)
     }
 
-    static get right(): Vector2{
+    static get right(): Vector2 {
         return new Vector2(1, 0)
     }
 
-    get x(): number { return this._x }
+    get x(): number {
+        return this._x
+    }
 
-    get y(): number { return this._y }
+    get y(): number {
+        return this._y
+    }
 
-    get magnitude(): number { return Math.sqrt(this.x * this.x + this.y * this.y) }
+    get magnitude(): number {
+        return Math.sqrt(this.x * this.x + this.y * this.y)
+    }
 
     get normalize(): Vector2 {
         const magnitude = this.magnitude
@@ -49,8 +55,7 @@ export class Vector2 {
         return Vector2.zero
     }
 
-    dot (other: Vector2): number {
+    dot(other: Vector2): number {
         return this._x * other._x + this._y * other._y
     }
-
 }

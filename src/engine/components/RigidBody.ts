@@ -1,13 +1,13 @@
-import { GameObject } from "../system/GameObject"
-import { Time } from "../system/Time"
-import { Vector2 } from "../utils/Vector2"
-import { Component } from "./Component"
+import { GameObject } from '../system/GameObject'
+import { Time } from '../system/Time'
+import { Vector2 } from '../utils/Vector2'
+import { Component } from './Component'
 
 const GRAVITY_ACCELERATION = 100
 
 export enum ForceMode {
     Force,
-    VelocityChange
+    VelocityChange,
 }
 
 export class RigidBody extends Component {
@@ -33,10 +33,13 @@ export class RigidBody extends Component {
 
     public update(): void {
         if (this.gravityScale) {
-            this.velocity = this.velocity.add(new Vector2(0, -GRAVITY_ACCELERATION * this.gravityScale).mul(Time.deltaTime))
+            this.velocity = this.velocity.add(
+                new Vector2(0, -GRAVITY_ACCELERATION * this.gravityScale).mul(Time.deltaTime)
+            )
         }
         if (this.velocity.magnitude > 0.1)
-            this.gameObject.transform.position = this.gameObject.transform.position.add(this.velocity.mul(Time.deltaTime * GRAVITY_ACCELERATION))
-        
+            this.gameObject.transform.position = this.gameObject.transform.position.add(
+                this.velocity.mul(Time.deltaTime * GRAVITY_ACCELERATION)
+            )
     }
 }

@@ -1,13 +1,13 @@
-import { Text } from "../../engine/UI/Text"
-import { GameObject } from "../../engine/system/GameObject"
-import { SceneManager } from "../../engine/system/scene/SceneManager"
-import { Vector2 } from "../../engine/utils/Vector2"
-import { Game } from "../../game"
-import { Enviroment } from "../Enviroment"
-import { GameManager } from "../GameManager"
-import { GameState } from "../GameState"
+import { Text } from '../../engine/UI/Text'
+import { GameObject } from '../../engine/system/GameObject'
+import { SceneManager } from '../../engine/system/scene/SceneManager'
+import { Vector2 } from '../../engine/utils/Vector2'
+import { Game } from '../../game'
+import { Enviroment } from '../Enviroment'
+import { GameManager } from '../GameManager'
+import { GameState } from '../GameState'
 
-export class ScoreManager extends GameObject{
+export class ScoreManager extends GameObject {
     private static score: number
     private static highScore: number
     private enviroment: Enviroment
@@ -22,7 +22,7 @@ export class ScoreManager extends GameObject{
         this.scoreText.name = 'ScoreText'
 
         const gameplayScene = SceneManager.getSceneByName('GameplayScene')
-        if (gameplayScene){
+        if (gameplayScene) {
             gameplayScene.registerGameObject(this.scoreText)
         }
 
@@ -32,15 +32,15 @@ export class ScoreManager extends GameObject{
 
     public update(): void {
         super.update()
-        if (GameManager.getGameState() === GameState.Playing){
-            ScoreManager.score = this.enviroment.point() <= 0 ? 0 : Math.floor(this.enviroment.point())
+        if (GameManager.getGameState() === GameState.Playing) {
+            ScoreManager.score =
+                this.enviroment.point() <= 0 ? 0 : Math.floor(this.enviroment.point())
             this.scoreText.text = ScoreManager.score.toString()
 
-            if (ScoreManager.score > ScoreManager.highScore){
+            if (ScoreManager.score > ScoreManager.highScore) {
                 ScoreManager.highScore = ScoreManager.score
             }
-        }
-        else {
+        } else {
             ScoreManager.score = 0
         }
     }

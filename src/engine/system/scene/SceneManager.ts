@@ -1,15 +1,15 @@
-import { Scene } from "./Scene"
+import { Scene } from './Scene'
 
 export class SceneManager {
     private static scenes: Scene[]
 
-    public static init(): void{
+    public static init(): void {
         this.scenes = []
     }
 
-    public static update(): void{
-        for (const scene of this.scenes){
-            if (scene.active){
+    public static update(): void {
+        for (const scene of this.scenes) {
+            if (scene.active) {
                 scene.update()
             }
         }
@@ -22,24 +22,22 @@ export class SceneManager {
         this.scenes.push(scene)
     }
 
-    public static getSceneByName(name: string): Scene | null{
-        for (const scene of this.scenes){
-            if (scene.name === name){
+    public static getSceneByName(name: string): Scene | null {
+        for (const scene of this.scenes) {
+            if (scene.name === name) {
                 return scene
             }
         }
         return null
     }
 
-    public static loadScene(targetScene: Scene) : void{
-        for (const scene of this.scenes){
-            if (scene === targetScene){
+    public static loadScene(targetScene: Scene): void {
+        for (const scene of this.scenes) {
+            if (scene === targetScene) {
                 scene.setActive(true)
-            }
-            else
-            {
-                for (const gameObject of scene.gameObjects){
-                    if (gameObject.dontDestroyOnLoad){
+            } else {
+                for (const gameObject of scene.gameObjects) {
+                    if (gameObject.dontDestroyOnLoad) {
                         scene.unregisterGameObject(gameObject)
                         targetScene.registerGameObject(gameObject)
                     }

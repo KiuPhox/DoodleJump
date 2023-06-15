@@ -1,14 +1,14 @@
-import { Event } from "../engine/event/Event"
-import { GameState } from "./GameState"
-import { SceneManager } from "../engine/system/scene/SceneManager"
-import { SoundManager } from "./SoundManager"
+import { Event } from '../engine/event/Event'
+import { GameState } from './GameState'
+import { SceneManager } from '../engine/system/scene/SceneManager'
+import { SoundManager } from './SoundManager'
 
 export class GameManager {
     private static gameState: GameState
 
     public static OnGameStateChanged: Event<GameState>
 
-    public static init(){
+    public static init() {
         this.OnGameStateChanged = new Event<GameState>()
     }
 
@@ -30,16 +30,14 @@ export class GameManager {
         this.OnGameStateChanged.invoke(this.gameState)
     }
 
-    private static handleReadyState(){
+    private static handleReadyState() {
         const scene = SceneManager.getSceneByName('MainMenuScene')
-        if (scene)
-        SceneManager.loadScene(scene)
+        if (scene) SceneManager.loadScene(scene)
     }
 
-    private static handlePlayingState(){
+    private static handlePlayingState() {
         const scene = SceneManager.getSceneByName('GameplayScene')
-        if (scene)
-        SceneManager.loadScene(scene)
+        if (scene) SceneManager.loadScene(scene)
     }
 
     public static getGameState(): GameState {

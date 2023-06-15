@@ -1,15 +1,15 @@
-import { Collider } from "../../engine/components/Collider"
-import { Sprite } from "../../engine/components/Sprite"
-import { Canvas } from "../../engine/system/Canvas"
-import { GameObject } from "../../engine/system/GameObject"
-import { Vector2 } from "../../engine/utils/Vector2"
-import { ObjectPoolManager } from "../level/ObjectPoolManager"
+import { Collider } from '../../engine/components/Collider'
+import { Sprite } from '../../engine/components/Sprite'
+import { Canvas } from '../../engine/system/Canvas'
+import { GameObject } from '../../engine/system/GameObject'
+import { Vector2 } from '../../engine/utils/Vector2'
+import { ObjectPoolManager } from '../level/ObjectPoolManager'
 
-export class Hole extends GameObject{
+export class Hole extends GameObject {
     private sprite: Sprite
 
-    constructor(){
-        super("Hole")
+    constructor() {
+        super('Hole')
 
         this.sprite = new Sprite(this, 2)
         this.sprite.setSprite('assets/images/hole.png')
@@ -24,9 +24,8 @@ export class Hole extends GameObject{
 
     public update(): void {
         super.update()
-        if (this.transform.position.y + this.sprite.height / 2 < -Canvas.size.y / 2){
+        if (this.transform.position.y + this.sprite.height / 2 < -Canvas.size.y / 2) {
             ObjectPoolManager.holePool.release(this)
         }
-
     }
 }

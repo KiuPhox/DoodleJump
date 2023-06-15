@@ -1,14 +1,14 @@
-import { Text } from "../../engine/UI/Text"
-import { GameObject } from "../../engine/system/GameObject"
-import { SceneManager } from "../../engine/system/scene/SceneManager"
-import { Ease } from "../../engine/system/tween/Ease"
-import { Tween } from "../../engine/system/tween/Tween"
-import { Vector2 } from "../../engine/utils/Vector2"
-import { GameManager } from "../GameManager"
-import { GameState } from "../GameState"
-import { PlayButton } from "./PlayButton"
-import { ReturnMenuButton } from "./ReturnMenuButton"
-import { ScoreManager } from "./ScoreManager"
+import { Text } from '../../engine/UI/Text'
+import { GameObject } from '../../engine/system/GameObject'
+import { SceneManager } from '../../engine/system/scene/SceneManager'
+import { Ease } from '../../engine/system/tween/Ease'
+import { Tween } from '../../engine/system/tween/Tween'
+import { Vector2 } from '../../engine/utils/Vector2'
+import { GameManager } from '../GameManager'
+import { GameState } from '../GameState'
+import { PlayButton } from './PlayButton'
+import { ReturnMenuButton } from './ReturnMenuButton'
+import { ScoreManager } from './ScoreManager'
 
 const INITIAL_POSITION = new Vector2(0, -500)
 
@@ -19,7 +19,7 @@ export class GameOverCanvas extends GameObject {
     private scoreText: Text
     private highScoreText: Text
 
-    constructor(){
+    constructor() {
         super('GameOverCanvas')
         const scene = SceneManager.getSceneByName('GameplayScene')
         if (scene) this.scene = scene
@@ -45,7 +45,6 @@ export class GameOverCanvas extends GameObject {
         this.highScoreText.setParent(this)
 
         this.transform.position = INITIAL_POSITION
-        
 
         GameManager.OnGameStateChanged.subscribe(this.OnGameStateChanged)
     }
@@ -59,7 +58,7 @@ export class GameOverCanvas extends GameObject {
     }
 
     OnGameStateChanged = (gameState: GameState) => {
-        switch (gameState){
+        switch (gameState) {
             case GameState.Ready:
                 this.setActive(false)
                 break
@@ -69,7 +68,7 @@ export class GameOverCanvas extends GameObject {
                 break
             case GameState.GameOver:
                 this.setActive(true)
-                new Tween(this.transform, 1).to({'position': Vector2.zero}).setEasing(Ease.OutQuart)
+                new Tween(this.transform, 1).to({ position: Vector2.zero }).setEasing(Ease.OutQuart)
                 this.scoreText.text = 'your score: ' + ScoreManager.getScore()
                 this.highScoreText.text = 'your high score: ' + ScoreManager.getHighScore()
                 break

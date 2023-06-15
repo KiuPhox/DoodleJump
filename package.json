@@ -8,8 +8,8 @@
     "build": "rimraf dist && webpack --config webpack/webpack.prod.js",
     "bundle": "npm run build",
     "preview": "serve dist",
-    "util:check": "prettier --check src/scripts/**",
-    "util:format": "prettier --write src/scripts/**",
+    "util:check": "prettier --check src/**",
+    "util:format": "prettier --write src/**",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },

@@ -1,5 +1,5 @@
-import { Collider } from "../components/Collider"
-import { Layer } from "./Layer"
+import { Collider } from '../components/Collider'
+import { Layer } from './Layer'
 
 const DEFAULT_BOUNCINESS = 0.75
 
@@ -26,7 +26,11 @@ export class Physic {
     }
 
     // Set interaction between two layers
-    public static setInteractiveLayer(firstLayer: string, secondLayer: string, value: boolean): void {
+    public static setInteractiveLayer(
+        firstLayer: string,
+        secondLayer: string,
+        value: boolean
+    ): void {
         Physic.interactiveLayers[`${firstLayer},${secondLayer}`] = value
         Physic.interactiveLayers[`${secondLayer},${firstLayer}`] = value
     }
@@ -51,7 +55,10 @@ export class Physic {
                 const layerB = colliderB.gameObject.layer
 
                 // Check if the layers have interactive interaction and collision occurs
-                if (Physic.isInteractiveLayer(layerA, layerB) && Physic.checkCollision(colliderA, colliderB)) {
+                if (
+                    Physic.isInteractiveLayer(layerA, layerB) &&
+                    Physic.checkCollision(colliderA, colliderB)
+                ) {
                     colliderA.colliding(colliderB) // Notify collider A of the collision
                     colliderB.colliding(colliderA) // Notify collider B of the collision
                 }

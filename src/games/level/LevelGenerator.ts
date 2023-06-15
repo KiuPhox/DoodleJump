@@ -1,14 +1,14 @@
-import { GameObject } from "../../engine/system/GameObject"
-import { Game } from "../../game"
-import { Enviroment } from "../Enviroment"
-import { Player } from "../player/Player"
-import { GameState } from "../GameState"
-import { GameManager } from "../GameManager"
-import { PlatformGenerator } from "./PlatformGenerator"
-import { ObstacleGenerator } from "./ObstacleGenerator"
-import { ObjectPoolManager } from "./ObjectPoolManager"
+import { GameObject } from '../../engine/system/GameObject'
+import { Game } from '../../game'
+import { Enviroment } from '../Enviroment'
+import { Player } from '../player/Player'
+import { GameState } from '../GameState'
+import { GameManager } from '../GameManager'
+import { PlatformGenerator } from './PlatformGenerator'
+import { ObstacleGenerator } from './ObstacleGenerator'
+import { ObjectPoolManager } from './ObjectPoolManager'
 
-export class LevelGenerator extends GameObject{
+export class LevelGenerator extends GameObject {
     constructor() {
         super('PlatformGenerator')
 
@@ -28,7 +28,7 @@ export class LevelGenerator extends GameObject{
     }
 
     OnGameStateChange = (gameState: GameState) => {
-        switch (gameState){
+        switch (gameState) {
             case GameState.Ready:
                 this.handleReady()
                 break
@@ -38,11 +38,11 @@ export class LevelGenerator extends GameObject{
         }
     }
 
-    private handlePlaying(){
+    private handlePlaying() {
         PlatformGenerator.playingStateSpawn()
     }
-    
-    private handleReady(){
+
+    private handleReady() {
         PlatformGenerator.readySpawn()
         ObstacleGenerator.reset()
     }

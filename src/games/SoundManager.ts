@@ -1,4 +1,4 @@
-import { Utils } from "../engine/utils/Utils"
+import { Utils } from '../engine/utils/Utils'
 
 const JUMP_AUDIO_PATH = 'assets/audios/jump.mp3'
 const BREAK_AUDIO_PATH = 'assets/audios/break_platform.mp3'
@@ -11,8 +11,7 @@ const MONSTER_HIT_AUDIO_PATH = 'assets/audios/monster_hit.mp3'
 const HOLE_AUDIO_PATH = 'assets/audios/black_hole.mp3'
 const JUMP_ON_MONSTER_AUDIO_PATH = 'assets/audios/jumponmonster.mp3'
 
-export class SoundManager{    
-
+export class SoundManager {
     private static hatAudio: HTMLAudioElement
     private static jetpackAudio: HTMLAudioElement
     private static fallingAudio: HTMLAudioElement
@@ -24,8 +23,7 @@ export class SoundManager{
     private static whiteAudio: HTMLAudioElement
     private static jumpOnMonsterAudio: HTMLAudioElement
 
-    public static async init() :Promise<void> {
-
+    public static async init(): Promise<void> {
         this.jumpAudio = await this.loadAudio(JUMP_AUDIO_PATH)
         this.hatAudio = await this.loadAudio(HAT_AUDIO_PATH)
         this.jetpackAudio = await this.loadAudio(JETPACK_AUDIO_PATH)
@@ -49,50 +47,50 @@ export class SoundManager{
     public static playJumpSound(): void {
         this.jumpAudio.volume = 0.5
         this.jumpAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
-        this.jumpAudio.play().catch(()=>{
+        this.jumpAudio.play().catch(() => {
             //
         })
     }
 
-    public static playSpringSound(): void {        
+    public static playSpringSound(): void {
         this.springAudio.volume = 0.5
         this.springAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
         this.springAudio.play()
     }
 
-    public static playWhiteSound(): void {        
+    public static playWhiteSound(): void {
         this.whiteAudio.volume = 0.4
         this.whiteAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
         this.whiteAudio.play()
     }
 
-    public static playHatSound(): void{
+    public static playHatSound(): void {
         this.hatAudio.volume = 0.2
         this.hatAudio.play()
     }
 
-    public static playJetpackSound(): void{
+    public static playJetpackSound(): void {
         this.jetpackAudio.volume = 0.2
         this.jetpackAudio.play()
     }
 
-    public static playGameOverSound(): void{
+    public static playGameOverSound(): void {
         this.fallingAudio.volume = 0.2
         this.fallingAudio.play()
     }
 
-    public static playMonsterHitSound(): void{
+    public static playMonsterHitSound(): void {
         this.monsterHitAudio.volume = 0.2
         this.monsterHitAudio.play()
     }
 
-    public static playJumpOnMonsterSound(): void{
+    public static playJumpOnMonsterSound(): void {
         this.jumpOnMonsterAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
         this.jumpOnMonsterAudio.play()
         this.jumpOnMonsterAudio.volume = 0.2
     }
 
-    public static playHoleSound(): void{
+    public static playHoleSound(): void {
         this.holeAudio.volume = 0.2
         this.holeAudio.play()
     }

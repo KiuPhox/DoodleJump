@@ -1,9 +1,9 @@
-import { Collider } from "../../engine/components/Collider"
-import { Sprite } from "../../engine/components/Sprite"
-import { GameObject } from "../../engine/system/GameObject"
+import { Collider } from '../../engine/components/Collider'
+import { Sprite } from '../../engine/components/Sprite'
+import { GameObject } from '../../engine/system/GameObject'
 
 export class Jetpack extends GameObject {
-    constructor(){
+    constructor() {
         super('Jetpack')
 
         const sprite = new Sprite(this, 2)

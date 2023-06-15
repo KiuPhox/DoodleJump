@@ -1,4 +1,4 @@
-export enum LoopType{
+export enum LoopType {
     Restart,
-    Yoyo
+    Yoyo,
 }

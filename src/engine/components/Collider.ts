@@ -1,10 +1,10 @@
-import { GameObject } from "../system/GameObject"
-import { Vector2 } from "../utils/Vector2"
-import { Event } from "../event/Event"
-import { Physic } from "../system/Physic"
-import { Component } from "./Component"
-import { RigidBody } from "./RigidBody"
-import { Sprite } from "./Sprite"
+import { GameObject } from '../system/GameObject'
+import { Vector2 } from '../utils/Vector2'
+import { Event } from '../event/Event'
+import { Physic } from '../system/Physic'
+import { Component } from './Component'
+import { RigidBody } from './RigidBody'
+import { Sprite } from './Sprite'
 
 export class Collider extends Component {
     public isTrigger: boolean
@@ -16,13 +16,15 @@ export class Collider extends Component {
         super(gameObject)
         this.scale = new Vector2(1, 1)
         this.isTrigger = false
-        this.name = "Collider"
+        this.name = 'Collider'
         Physic.registerCollider(this)
     }
 
     get size(): Vector2 {
         const sprite = this.gameObject.getComponent('Sprite') as Sprite
-        return new Vector2(sprite.width * this.scale.x, sprite.height * this.scale.y).mul(this.gameObject.transform.scale)
+        return new Vector2(sprite.width * this.scale.x, sprite.height * this.scale.y).mul(
+            this.gameObject.transform.scale
+        )
     }
 
     public update(): void {

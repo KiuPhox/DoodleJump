@@ -1,13 +1,13 @@
-import { Collider } from "../../engine/components/Collider"
-import { Sprite } from "../../engine/components/Sprite"
-import { GameObject } from "../../engine/system/GameObject"
+import { Collider } from '../../engine/components/Collider'
+import { Sprite } from '../../engine/components/Sprite'
+import { GameObject } from '../../engine/system/GameObject'
 
 const SPRING_SPRITE = 'assets/images/spring-0.png'
 const SPRING_ACTIVE_SPRITE = 'assets/images/spring-1.png'
 
-export class Spring extends GameObject{
+export class Spring extends GameObject {
     private sprite: Sprite
-    constructor(){
+    constructor() {
         super('Spring')
 
         this.sprite = new Sprite(this, 2)
@@ -20,7 +20,7 @@ export class Spring extends GameObject{
         this.addComponent(collider)
     }
 
-    public activeSpring(): void{
+    public activeSpring(): void {
         this.sprite.setSprite(SPRING_ACTIVE_SPRITE)
     }
 }

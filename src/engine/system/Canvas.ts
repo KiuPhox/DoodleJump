@@ -1,10 +1,9 @@
-import { Text } from "../UI/Text"
-import { UIManager } from "../UI/UIManager"
-import { Sprite } from "../components/Sprite"
-import { Vector2 } from "../utils/Vector2"
+import { Text } from '../UI/Text'
+import { UIManager } from '../UI/UIManager'
+import { Sprite } from '../components/Sprite'
+import { Vector2 } from '../utils/Vector2'
 
 export class Canvas {
-
     public static canvas: HTMLCanvasElement
     public static context: CanvasRenderingContext2D | null
     public static size: Vector2 = new Vector2(320, 512)
@@ -30,15 +29,13 @@ export class Canvas {
             //     if (!gameObject.scene.active) continue
             // }
 
-
             const canvasCenterX = this.size.x / 2
             const canvasCenterY = this.size.y / 2
-            const spriteCenterX = sprite.width / 2 * gameObject.transform.scale
-            const spriteCenterY = sprite.height / 2 * gameObject.transform.scale
+            const spriteCenterX = (sprite.width / 2) * gameObject.transform.scale
+            const spriteCenterY = (sprite.height / 2) * gameObject.transform.scale
 
             const drawX = gameObject.transform.position.x + canvasCenterX
             const drawY = -gameObject.transform.position.y + canvasCenterY
-
 
             Canvas.context.save()
             Canvas.context.globalAlpha = sprite.alpha
@@ -63,7 +60,6 @@ export class Canvas {
                 )
             }
 
-
             Canvas.context.restore()
         }
 
@@ -71,8 +67,8 @@ export class Canvas {
             if (!text.active) continue
             Canvas.context.font = text.font
             Canvas.context.fillText(
-                text.text, 
-                text.transform.position.x + this.size.x / 2, 
+                text.text,
+                text.transform.position.x + this.size.x / 2,
                 -text.transform.position.y + this.size.y / 2
             )
         }
@@ -80,25 +76,30 @@ export class Canvas {
 
     public static registerSprite(sprite: Sprite): void {
         Canvas.sprites.push(sprite)
-        Canvas.sprites.sort((a, b) => (b.order - a.order))
+        Canvas.sprites.sort((a, b) => b.order - a.order)
     }
 
-    public static registerText(text: Text): void{
+    public static registerText(text: Text): void {
         Canvas.texts.push(text)
     }
 
     private static handleClick(event: MouseEvent): void {
-        const mousePos = new Vector2(event.offsetX - Canvas.size.x / 2, -event.offsetY + Canvas.size.y / 2)
+        const mousePos = new Vector2(
+            event.offsetX - Canvas.size.x / 2,
+            -event.offsetY + Canvas.size.y / 2
+        )
 
         for (const button of UIManager.buttons) {
             if (!button.active) continue
 
             const buttonPos = button.transform.position
 
-            if (mousePos.x >= buttonPos.x - button.width / 2 &&
+            if (
+                mousePos.x >= buttonPos.x - button.width / 2 &&
                 mousePos.x <= buttonPos.x + button.width / 2 &&
                 mousePos.y >= buttonPos.y - button.height / 2 &&
-                mousePos.y <= buttonPos.y + button.height / 2) {
+                mousePos.y <= buttonPos.y + button.height / 2
+            ) {
                 button.onClick()
             }
         }
