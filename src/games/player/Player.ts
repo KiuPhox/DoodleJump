@@ -174,9 +174,18 @@ export class Player extends GameObject{
                     GameManager.updateGameState(GameState.GameOver)
                 })
             }
-            else if (collider.gameObject.name === 'Monster' && !this.isMonsterTouched){
-                this.isMonsterTouched = true
-                SoundManager.playMonsterHitSound()
+            else if (collider.gameObject.name === 'Monster' && !this.isMonsterTouched) {
+                const playerBottom = this.transform.position.y - this.collider.size.y / 2
+
+                if (playerBottom > collider.gameObject.transform.position.y && this.isFalling){
+                    this.jump(JUMP_FORCE)
+                    SoundManager.playJumpOnMonsterSound()
+                }
+                else
+                {
+                    this.isMonsterTouched = true
+                    SoundManager.playMonsterHitSound()
+                }
             }
         }
     }
@@ -189,9 +198,9 @@ export class Player extends GameObject{
         switch (gameState){
             case GameState.Ready:
                 this.transform.position = new Vector2(-80, 0)
-                this.rigidBody.velocity = Vector2.zero
                 this.transform.scale = 1
                 this.transform.rotation = 0
+                this.rigidBody.velocity = Vector2.zero
                 this.rigidBody.gravityScale =0.08
                 break
             case GameState.Playing:
@@ -200,7 +209,8 @@ export class Player extends GameObject{
                 this.transform.scale = 1
                 this.transform.rotation = 0
                 this.transform.position = Vector2.zero
-                this.rigidBody.gravityScale =0.08
+                this.rigidBody.velocity = Vector2.zero
+                this.rigidBody.gravityScale = 0.08
                 break
             case GameState.GameOver:
                 this.gameOverDelayTimer = GAME_OVER_DELAY

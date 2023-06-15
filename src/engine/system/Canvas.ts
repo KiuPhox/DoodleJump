@@ -25,6 +25,11 @@ export class Canvas {
             const gameObject = sprite.gameObject
 
             if (!gameObject.active) continue
+            //console.log(gameObject)
+            // if (!gameObject.dontDestroyOnLoad){
+            //     if (!gameObject.scene.active) continue
+            // }
+
 
             const canvasCenterX = this.size.x / 2
             const canvasCenterY = this.size.y / 2

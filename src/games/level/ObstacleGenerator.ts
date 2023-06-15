@@ -1,3 +1,5 @@
+import { Sprite } from "../../engine/components/Sprite"
+import { Canvas } from "../../engine/system/Canvas"
 import { GameObject } from "../../engine/system/GameObject"
 import { Utils } from "../../engine/utils/Utils"
 import { Vector2 } from "../../engine/utils/Vector2"
@@ -31,7 +33,12 @@ export class ObstacleGenerator {
         }
 
         if (obstacle){
-            obstacle.transform.position = PlatformGenerator.previousPlatformGenerated.transform.position.add(new Vector2(0, 200))
+            const sprite = obstacle.getComponent('Sprite') as Sprite
+
+            obstacle.transform.position = 
+            PlatformGenerator.previousPlatformGenerated.transform.position.add(
+                new Vector2(Utils.RandomFloat(-Canvas.size.x / 2 + sprite.width, Canvas.size.x / 2 - sprite.width), 200)
+            )
         }
     }
 

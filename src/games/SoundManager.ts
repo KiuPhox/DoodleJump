@@ -9,6 +9,7 @@ const FALLING_AUDIO_PATH = 'assets/audios/falling.mp3'
 const WHITE_AUDIO_PATH = 'assets/audios/white.mp3'
 const MONSTER_HIT_AUDIO_PATH = 'assets/audios/monster_hit.mp3'
 const HOLE_AUDIO_PATH = 'assets/audios/black_hole.mp3'
+const JUMP_ON_MONSTER_AUDIO_PATH = 'assets/audios/jumponmonster.mp3'
 
 export class SoundManager{    
 
@@ -68,6 +69,14 @@ export class SoundManager{
     public static playMonsterHitSound(): void{
         this.monsterHitAudio.volume = 0.2
         this.monsterHitAudio.play()
+    }
+
+    public static playJumpOnMonsterSound(): void{
+        const jumpOnMonsterAudio = new Audio(JUMP_ON_MONSTER_AUDIO_PATH)
+
+        jumpOnMonsterAudio.volume = 0.2
+        jumpOnMonsterAudio.playbackRate = Utils.RandomFloat(0.9, 1.1)
+        jumpOnMonsterAudio.play()
     }
 
     public static playHoleSound(): void{

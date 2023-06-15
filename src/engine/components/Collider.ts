@@ -22,7 +22,7 @@ export class Collider extends Component {
 
     get size(): Vector2 {
         const sprite = this.gameObject.getComponent('Sprite') as Sprite
-        return new Vector2(sprite.width * this.scale.x, sprite.height * this.scale.y)
+        return new Vector2(sprite.width * this.scale.x, sprite.height * this.scale.y).mul(this.gameObject.transform.scale)
     }
 
     public update(): void {

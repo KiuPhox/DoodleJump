@@ -1,49 +1,15 @@
 import { Event } from "../engine/event/Event"
-import { Layer } from "../engine/system/Layer"
-import { Physic } from "../engine/system/Physic"
 import { GameState } from "./GameState"
-import Background from "./Background"
-import { Player } from "./player/Player"
-import { Enviroment } from "./Enviroment"
-import { TopBar } from "./ui/TopBar"
-import { LevelGenerator } from "./level/LevelGenerator"
-import { BlackImage } from "./ui/BlackImage"
-import { MainMenu } from "./ui/MainMenu"
+import { SceneManager } from "../engine/system/scene/SceneManager"
 import { SoundManager } from "./SoundManager"
-import { ScoreManager } from "./ui/ScoreManager"
-import { GameOverCanvas } from "./ui/GameOverCanvas"
 
 export class GameManager {
     private static gameState: GameState
 
     public static OnGameStateChanged: Event<GameState>
 
-    private static blackImage: BlackImage
-
     public static init(){
-        // Physic setup
-        Layer.add('Background')
-        Physic.setInteractiveLayer('Background', 'Background', false)
-
         this.OnGameStateChanged = new Event<GameState>()
-
-        const player = new Player()    
-        new Background()
-        new TopBar()
-
-        new Enviroment(player)
-
-        new LevelGenerator()
-
-        new MainMenu()
-
-        new GameOverCanvas()
-
-        this.blackImage = new BlackImage()
-
-        new ScoreManager()
-        
-        this.updateGameState(GameState.Ready)
     }
 
     public static updateGameState(gameState: GameState): void {
@@ -51,8 +17,10 @@ export class GameManager {
 
         switch (this.gameState) {
             case GameState.Ready:
+                this.handleReadyState()
                 break
             case GameState.Playing:
+                this.handlePlayingState()
                 break
             case GameState.GameOver:
                 SoundManager.playGameOverSound()
@@ -60,6 +28,18 @@ export class GameManager {
         }
 
         this.OnGameStateChanged.invoke(this.gameState)
+    }
+
+    private static handleReadyState(){
+        const scene = SceneManager.getSceneByName('MainMenuScene')
+        if (scene)
+        SceneManager.loadScene(scene)
+    }
+
+    private static handlePlayingState(){
+        const scene = SceneManager.getSceneByName('GameplayScene')
+        if (scene)
+        SceneManager.loadScene(scene)
     }
 
     public static getGameState(): GameState {

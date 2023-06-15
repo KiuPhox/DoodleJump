@@ -1,5 +1,6 @@
 import { Text } from "../../engine/UI/Text"
 import { GameObject } from "../../engine/system/GameObject"
+import { SceneManager } from "../../engine/system/scene/SceneManager"
 import { Vector2 } from "../../engine/utils/Vector2"
 import { Game } from "../../game"
 import { Enviroment } from "../Enviroment"
@@ -19,6 +20,12 @@ export class ScoreManager extends GameObject{
         this.scoreText.font = '600 32px DoodleJump'
         this.scoreText.transform.position = new Vector2(-150, -230)
         this.scoreText.name = 'ScoreText'
+
+        const gameplayScene = SceneManager.getSceneByName('GameplayScene')
+        if (gameplayScene){
+            gameplayScene.registerGameObject(this.scoreText)
+        }
+
         ScoreManager.score = 0
         ScoreManager.highScore = 0
     }

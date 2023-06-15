@@ -16,7 +16,7 @@ export class Hole extends GameObject{
 
         const collider = new Collider(this)
         collider.isTrigger = true
-        collider.scale = new Vector2(0.5, 0.5)
+        collider.scale = new Vector2(0.1, 0.1)
 
         this.addComponent(this.sprite)
         this.addComponent(collider)

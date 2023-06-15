@@ -1,5 +1,6 @@
 import { Text } from "../../engine/UI/Text"
 import { GameObject } from "../../engine/system/GameObject"
+import { SceneManager } from "../../engine/system/scene/SceneManager"
 import { Vector2 } from "../../engine/utils/Vector2"
 import { GameManager } from "../GameManager"
 import { GameState } from "../GameState"
@@ -16,6 +17,9 @@ export class GameOverCanvas extends GameObject {
 
     constructor(){
         super('GameOverCanvas')
+        const scene = SceneManager.getSceneByName('GameplayScene')
+        if (scene) this.scene = scene
+
         this.playButton = new PlayButton()
         this.returnMenuButton = new ReturnMenuButton()
 
@@ -30,6 +34,11 @@ export class GameOverCanvas extends GameObject {
 
         this.scoreText.font = '600 30px DoodleJump'
         this.highScoreText.font = '600 30px DoodleJump'
+
+        this.playButton.setParent(this)
+        this.returnMenuButton.setParent(this)
+        this.scoreText.setParent(this)
+        this.highScoreText.setParent(this)
 
 
         GameManager.OnGameStateChanged.subscribe(this.OnGameStateChanged)

@@ -22,7 +22,7 @@ export class ObjectPoolManager {
         this.basePlatformsPool = new ObjectPool<BasePlatform>(
             () => {
                 const platform = new BasePlatform()
-                platform.parent = enviroment
+                platform.setParent(enviroment)
                 PlatformGenerator.platforms.push(platform)
                 return platform
             },
@@ -33,7 +33,7 @@ export class ObjectPoolManager {
         this.bluePlatformsPool = new ObjectPool<BluePlatform>(
             () => {
                 const platform = new BluePlatform()
-                platform.parent = enviroment
+                platform.setParent(enviroment)
                 PlatformGenerator.platforms.push(platform)
                 return platform
             },
@@ -44,7 +44,7 @@ export class ObjectPoolManager {
         this.brownPlatformsPool= new ObjectPool<BrownPlatform>(
             () => {
                 const platform = new BrownPlatform()
-                platform.parent = enviroment
+                platform.setParent(enviroment)
                 PlatformGenerator.platforms.push(platform)
                 return platform
             },
@@ -55,7 +55,7 @@ export class ObjectPoolManager {
         this.whitePlatformsPool= new ObjectPool<WhitePlatform>(
             () => {
                 const platform = new WhitePlatform()
-                platform.parent = enviroment
+                platform.setParent(enviroment)
                 PlatformGenerator.platforms.push(platform)
                 return platform
             },
@@ -66,7 +66,7 @@ export class ObjectPoolManager {
         this.holePool= new ObjectPool<Hole>(
             () => {
                 const hole = new Hole()
-                hole.parent = enviroment
+                hole.setParent(enviroment)
                 ObstacleGenerator.obstacles.push(hole)
                 return hole
             },
@@ -77,7 +77,7 @@ export class ObjectPoolManager {
         this.monsterPool= new ObjectPool<Monster>(
             () => {
                 const monster = new Monster()
-                monster.parent = enviroment
+                monster.setParent(enviroment)
                 ObstacleGenerator.obstacles.push(monster)
                 return monster
             },

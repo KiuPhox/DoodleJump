@@ -2,9 +2,11 @@ import { Game } from "../../game"
 import { Collider } from "../components/Collider"
 import { Component } from "../components/Component"
 import { Transform } from "../components/Transform"
+import { Scene } from "./scene/Scene"
 
 
 export class GameObject {
+    public scene: Scene
     public name: string
     public parent: GameObject | null = null
     public children: GameObject[] = []
@@ -14,16 +16,24 @@ export class GameObject {
     private components: { [key: string]: Component }
     public layer: string
 
+    public dontDestroyOnLoad: boolean
+
     constructor(name: string) {
         this.transform = new Transform(this)
         this.name = name
         this.layer = 'Default'
         this.components = {}
         this.isActive = true
+        this.dontDestroyOnLoad = false
 
         this.addComponent(this.transform)
 
         Game.registerGameObject(this)
+
+
+        if (this.parent?.scene){ 
+            this.parent.scene.registerGameObject(this)
+        }
     }
 
     public update(): void {
@@ -71,6 +81,8 @@ export class GameObject {
         if (this.children.includes(childNode)) return
         this.children.push(childNode)
         childNode.parent = this
+
+        this.scene.registerGameObject(childNode)
     }
 
     public removeChild(childNode: GameObject){
@@ -88,7 +100,7 @@ export class GameObject {
         else (this.onDisabled())
     }
 
-    get active(): boolean { return this.isActive }
+    get active(): boolean { return this.isActive && this.scene?.active}
     
     public start(): void { /**/ }
     public onEnabled(): void { /**/ }

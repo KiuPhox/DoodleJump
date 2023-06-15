@@ -5,11 +5,13 @@ import { UIManager } from "./engine/UI/UIManager"
 import { Physic } from "./engine/system/Physic"
 import { Input } from "./engine/system/input/Input"
 import { Layer } from "./engine/system/Layer"
-import { GameState } from "./games/GameState"
 import { GameObject } from "./engine/system/GameObject"
 import { SoundManager } from "./games/SoundManager"
 import { TweenManager } from "./engine/system/tween/TweenManager"
 import { ImagePreload } from "./engine/loader/ImagePreload"
+import { MainMenuScene } from "./games/scene/MainMenuScene"
+import { SceneManager } from "./engine/system/scene/SceneManager"
+import { GameplayScene } from "./games/scene/GameplayScene"
 
 const FRAME_RATE = 300
 
@@ -48,8 +50,20 @@ export class Game {
             Layer.init()
             SoundManager.init()
             TweenManager.init()
+
+            // GameManager.updateGameState(GameState.Ready)
+
+            Layer.add('Background')
+            Physic.setInteractiveLayer('Background', 'Background', false)
+
             GameManager.init()
-            GameManager.updateGameState(GameState.Ready)
+
+            SceneManager.init()
+
+            new MainMenuScene()
+            new GameplayScene()
+
+
 
             this.loop()
         })
@@ -58,22 +72,17 @@ export class Game {
     private loop() {
         if (Time.deltaTime >= 1 / FRAME_RATE) {
             Physic.update() // Physic
-            Game.update() // Update
             TweenManager.update()
+            SceneManager.update()
             Canvas.draw() // Render
             Input.reset() // Reset input
             Time.lastFrameTime = window.performance.now()
+
         }
 
         window.requestAnimationFrame(() => {
             this.loop()
         })
-    }
-
-    private static update(): void {
-        for (let i = 0; i < this.gameObjects.length; i++) {
-            this.gameObjects[i].executeUpdate()
-        }
     }
     
     public static registerGameObject(gameObject: GameObject): void {
