@@ -2,11 +2,11 @@ import { GameObject } from '../../engine/system/GameObject'
 import { Game } from '../../game'
 import { Enviroment } from '../Enviroment'
 import { Player } from '../player/Player'
-import { GameState } from '../GameState'
 import { GameManager } from '../GameManager'
 import { PlatformGenerator } from './PlatformGenerator'
 import { ObstacleGenerator } from './ObstacleGenerator'
 import { ObjectPoolManager } from './ObjectPoolManager'
+import { GameState } from '../GameState'
 
 export class LevelGenerator extends GameObject {
     constructor() {
@@ -29,10 +29,10 @@ export class LevelGenerator extends GameObject {
 
     OnGameStateChange = (gameState: GameState) => {
         switch (gameState) {
-            case GameState.Ready:
+            case GameState.READY:
                 this.handleReady()
                 break
-            case GameState.Playing:
+            case GameState.PLAYING:
                 this.handlePlaying()
                 break
         }

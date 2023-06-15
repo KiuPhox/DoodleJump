@@ -23,7 +23,7 @@ export class BlackImage extends GameObject {
 
     public show(): void {
         new Tween(this.sprite, FADE_DURATION).to({ alpha: 1 }).onComplete(() => {
-            GameManager.updateGameState(GameState.Playing)
+            GameManager.updateGameState(GameState.PLAYING)
             new Tween(this.sprite, 0).to({ alpha: 0 })
         })
     }

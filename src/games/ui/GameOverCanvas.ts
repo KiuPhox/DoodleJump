@@ -59,14 +59,14 @@ export class GameOverCanvas extends GameObject {
 
     OnGameStateChanged = (gameState: GameState) => {
         switch (gameState) {
-            case GameState.Ready:
+            case GameState.READY:
                 this.setActive(false)
                 break
-            case GameState.Playing:
+            case GameState.PLAYING:
                 this.setActive(false)
                 this.transform.position = INITIAL_POSITION
                 break
-            case GameState.GameOver:
+            case GameState.GAME_OVER:
                 this.setActive(true)
                 new Tween(this.transform, 1).to({ position: Vector2.zero }).setEasing(Ease.OutQuart)
                 this.scoreText.text = 'your score: ' + ScoreManager.getScore()

@@ -61,7 +61,7 @@ export class Game {
 
                 SceneManager.init()
 
-                GameManager.updateGameState(GameState.Ready)
+                GameManager.updateGameState(GameState.READY)
 
                 new MainMenuScene()
                 new GameplayScene()

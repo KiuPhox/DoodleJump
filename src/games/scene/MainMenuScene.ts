@@ -62,11 +62,11 @@ export class MainMenuScene extends Scene {
 
     OnGameStateChanged = (gameState: GameState) => {
         switch (gameState) {
-            case GameState.Ready:
+            case GameState.READY:
                 this.playButton.setActive(true)
                 this.title.setActive(true)
                 break
-            case GameState.Playing:
+            case GameState.PLAYING:
                 this.playButton.setActive(false)
                 this.title.setActive(false)
                 break

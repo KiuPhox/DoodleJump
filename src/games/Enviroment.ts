@@ -27,13 +27,13 @@ export class Enviroment extends GameObject {
         this.rigidBody.gravityScale = 0
 
         if (
-            GameManager.getGameState() !== GameState.GameOver &&
+            GameManager.getGameState() !== GameState.GAME_OVER &&
             this.player.transform.position.y >= 0 &&
             !this.player.isFalling
         ) {
             this.rigidBody.gravityScale = 0.08
             this.rigidBody.velocity = new Vector2(0, -this.playerRb.velocity.y)
-        } else if (GameManager.getGameState() === GameState.GameOver) {
+        } else if (GameManager.getGameState() === GameState.GAME_OVER) {
             this.rigidBody.addForce(Vector2.up.mul(20), ForceMode.VelocityChange)
         }
     }

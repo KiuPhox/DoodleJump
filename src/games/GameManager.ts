@@ -1,6 +1,6 @@
 import { Event } from '../engine/event/Event'
-import { GameState } from './GameState'
 import { SceneManager } from '../engine/system/scene/SceneManager'
+import { GameState } from './GameState'
 import { SoundManager } from './SoundManager'
 
 export class GameManager {
@@ -16,13 +16,13 @@ export class GameManager {
         this.gameState = gameState
 
         switch (this.gameState) {
-            case GameState.Ready:
+            case GameState.READY:
                 this.handleReadyState()
                 break
-            case GameState.Playing:
+            case GameState.PLAYING:
                 this.handlePlayingState()
                 break
-            case GameState.GameOver:
+            case GameState.GAME_OVER:
                 SoundManager.playGameOverSound()
                 break
         }

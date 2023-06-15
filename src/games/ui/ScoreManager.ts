@@ -32,7 +32,7 @@ export class ScoreManager extends GameObject {
 
     public update(): void {
         super.update()
-        if (GameManager.getGameState() === GameState.Playing) {
+        if (GameManager.getGameState() === GameState.PLAYING) {
             ScoreManager.score =
                 this.enviroment.point() <= 0 ? 0 : Math.floor(this.enviroment.point())
             this.scoreText.text = ScoreManager.score.toString()

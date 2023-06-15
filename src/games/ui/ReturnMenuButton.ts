@@ -12,6 +12,6 @@ export class ReturnMenuButton extends Button {
 
     onClick(): void {
         // this.sprite.setSprite(MENU_ON_PATH)
-        GameManager.updateGameState(GameState.Ready)
+        GameManager.updateGameState(GameState.READY)
     }
 }

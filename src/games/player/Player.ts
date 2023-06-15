@@ -10,12 +10,12 @@ import { BasePlatform } from '../platforms/BasePlatform'
 import { BrownPlatform } from '../platforms/BrownPlatform'
 import { Time } from '../../engine/system/Time'
 import { GameManager } from '../GameManager'
-import { GameState } from '../GameState'
 import { WhitePlatform } from '../platforms/WhitePlatform'
 import { Tween } from '../../engine/system/tween/Tween'
 import { Ease } from '../../engine/system/tween/Ease'
 import { ObjectPoolManager } from '../level/ObjectPoolManager'
 import { PlayerInput } from './PlayerInput'
+import { GameState } from '../GameState'
 
 const PLAYER_LEFT_IMAGE_PATH = 'assets/images/lik-left.png'
 const MOVE_SPEED = 2
@@ -77,7 +77,7 @@ export class Player extends GameObject {
 
         // Control
         if (
-            GameManager.getGameState() !== GameState.Ready &&
+            GameManager.getGameState() !== GameState.READY &&
             !this.isHoleTouched &&
             !this.isMonsterTouched
         ) {
@@ -94,7 +94,7 @@ export class Player extends GameObject {
 
         if (
             this.transform.position.y >= 0 ||
-            (GameManager.getGameState() === GameState.GameOver && this.gameOverDelayTimer > 0)
+            (GameManager.getGameState() === GameState.GAME_OVER && this.gameOverDelayTimer > 0)
         ) {
             this.transform.position = new Vector2(this.transform.position.x, 0)
         }
@@ -115,10 +115,10 @@ export class Player extends GameObject {
 
         if (this.transform.position.y + this.sprite.height / 2 < -Canvas.size.y / 2) {
             if (
-                GameManager.getGameState() === GameState.Playing ||
-                GameManager.getGameState() === GameState.Ready
+                GameManager.getGameState() === GameState.PLAYING ||
+                GameManager.getGameState() === GameState.READY
             ) {
-                GameManager.updateGameState(GameState.GameOver)
+                GameManager.updateGameState(GameState.GAME_OVER)
             }
         }
     }
@@ -139,7 +139,7 @@ export class Player extends GameObject {
             if (playerBottom < platformTop) return
 
             if (collider.gameObject.name == 'BrownPlatform') {
-                ;(collider.gameObject as BrownPlatform).setIsBreaking(true)
+                (collider.gameObject as BrownPlatform).setIsBreaking(true)
             } else {
                 this.jump(JUMP_FORCE)
 
@@ -157,7 +157,7 @@ export class Player extends GameObject {
             this.isFalling &&
             !this.isMonsterTouched
         ) {
-            ;(collider.gameObject as Spring).activeSpring()
+            (collider.gameObject as Spring).activeSpring()
 
             this.jump(SPRING_FORCE)
             SoundManager.playSpringSound()
@@ -186,7 +186,7 @@ export class Player extends GameObject {
                     .to({ scale: 0, rotation: 20 })
                     .setEasing(Ease.OutQuart)
                     .onComplete(() => {
-                        GameManager.updateGameState(GameState.GameOver)
+                        GameManager.updateGameState(GameState.GAME_OVER)
                     })
             } else if (collider.gameObject.name === 'Monster' && !this.isMonsterTouched) {
                 const playerBottom = this.transform.position.y - this.collider.size.y / 2
@@ -212,14 +212,14 @@ export class Player extends GameObject {
 
     OnGameStateChanged = (gameState: GameState) => {
         switch (gameState) {
-            case GameState.Ready:
+            case GameState.READY:
                 this.transform.position = new Vector2(-80, 0)
                 this.transform.scale = 1
                 this.transform.rotation = 0
                 this.rigidBody.velocity = Vector2.zero
                 this.rigidBody.gravityScale = 0.08
                 break
-            case GameState.Playing:
+            case GameState.PLAYING:
                 this.isHoleTouched = false
                 this.isMonsterTouched = false
                 this.transform.scale = 1
@@ -228,7 +228,7 @@ export class Player extends GameObject {
                 this.rigidBody.velocity = Vector2.zero
                 this.rigidBody.gravityScale = 0.08
                 break
-            case GameState.GameOver:
+            case GameState.GAME_OVER:
                 this.gameOverDelayTimer = GAME_OVER_DELAY
                 break
         }

@@ -1,6 +1,6 @@
 export enum GameState {
-    Ready,
-    Playing,
-    GameOver,
-    Pause,
+    READY = 'ready',
+    PLAYING = 'playing',
+    GAME_OVER = 'game_over',
+    PAUSE = 'pause',
 }
