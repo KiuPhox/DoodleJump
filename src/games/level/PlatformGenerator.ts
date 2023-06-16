@@ -64,15 +64,13 @@ export class PlatformGenerator {
         // Spawn a platform
         let platform = null
 
-        const platformTypeChances = { ...Level.getPlaformTypes(ScoreManager.getScore()) }
+        const platformTypeChances = [...Level.getPlaformTypes(ScoreManager.getScore())]
 
         // If the previous platform is brown, then the chance of spawn brown platform is 0
         if (this.previousPlatformGenerated instanceof BrownPlatform) {
             platformTypeChances[2] = 0
         }
-
         const platformTypeIndex = Utils.WeightPick(platformTypeChances)
-
         // Choose platform type to spawn
         switch (platformTypeIndex) {
             case 0:
