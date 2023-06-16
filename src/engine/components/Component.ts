@@ -8,11 +8,11 @@ export class Component {
         this.gameObject = gameObject
     }
 
-    update() {
+    public update(): void {
         // Update
     }
 
-    destroy() {
+    public destroy(): void {
         // Destroy
     }
 }

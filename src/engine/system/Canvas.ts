@@ -1,6 +1,6 @@
-import { Text } from '../UI/Text'
-import { UIManager } from '../UI/UIManager'
-import { Sprite } from '../components/Sprite'
+import { UIManager } from '../ui/UIManager'
+import { Sprite } from '../components/sprite/Sprite'
+import { SpriteManager } from '../components/sprite/SpriteManager'
 import { Vector2 } from '../utils/Vector2'
 
 export class Canvas {
@@ -8,26 +8,27 @@ export class Canvas {
     public static context: CanvasRenderingContext2D | null
     public static size: Vector2 = new Vector2(320, 512)
     private static sprites: Sprite[] = []
-    private static texts: Text[] = []
 
-    public static init(canvasName: string) {
+    public static init(canvasName: string): void {
         this.canvas = <HTMLCanvasElement>document.getElementById(canvasName)
         this.canvas.width = Canvas.size.x
         this.canvas.height = Canvas.size.y
         this.canvas.addEventListener('click', Canvas.handleClick)
-        Canvas.context = this.canvas.getContext('2d')
+        this.context = this.canvas.getContext('2d')
     }
 
     public static draw(): void {
+        this.renderSprites()
+        this.renderUITexts()
+    }
+
+    private static renderSprites(): void {
         if (!Canvas.context) return
-        for (const sprite of this.sprites) {
+
+        for (const sprite of SpriteManager.sprites) {
             const gameObject = sprite.gameObject
 
             if (!gameObject.active) continue
-            //console.log(gameObject)
-            // if (!gameObject.dontDestroyOnLoad){
-            //     if (!gameObject.scene.active) continue
-            // }
 
             const canvasCenterX = this.size.x / 2
             const canvasCenterY = this.size.y / 2
@@ -38,6 +39,7 @@ export class Canvas {
             const drawY = -gameObject.transform.position.y + canvasCenterY
 
             Canvas.context.save()
+            Canvas.context.globalCompositeOperation = sprite.blendMode
             Canvas.context.globalAlpha = sprite.alpha
             Canvas.context.translate(drawX, drawY)
             Canvas.context.rotate(gameObject.transform.rotation)
@@ -62,8 +64,12 @@ export class Canvas {
 
             Canvas.context.restore()
         }
+    }
 
-        for (const text of this.texts) {
+    private static renderUITexts(): void {
+        if (!Canvas.context) return
+
+        for (const text of UIManager.texts) {
             if (!text.active) continue
             Canvas.context.font = text.font
             Canvas.context.fillText(
@@ -72,15 +78,6 @@ export class Canvas {
                 -text.transform.position.y + this.size.y / 2
             )
         }
-    }
-
-    public static registerSprite(sprite: Sprite): void {
-        Canvas.sprites.push(sprite)
-        Canvas.sprites.sort((a, b) => b.order - a.order)
-    }
-
-    public static registerText(text: Text): void {
-        Canvas.texts.push(text)
     }
 
     private static handleClick(event: MouseEvent): void {

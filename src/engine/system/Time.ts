@@ -2,7 +2,7 @@ export class Time {
     private static startTime: number
     public static lastFrameTime: number
 
-    public static init() {
+    public static init(): void {
         Time.startTime = window.performance.now()
         Time.lastFrameTime = 0
     }

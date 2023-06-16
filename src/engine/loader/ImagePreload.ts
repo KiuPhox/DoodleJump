@@ -24,8 +24,6 @@ export class ImagePreload {
         }
 
         await Promise.all(promises)
-
-        console.log('All images have been loaded')
     }
 
     public static getImage(path: string): HTMLImageElement {

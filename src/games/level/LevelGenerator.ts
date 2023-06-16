@@ -38,11 +38,11 @@ export class LevelGenerator extends GameObject {
         }
     }
 
-    private handlePlaying() {
+    private handlePlaying(): void {
         PlatformGenerator.playingStateSpawn()
     }
 
-    private handleReady() {
+    private handleReady(): void {
         PlatformGenerator.readySpawn()
         ObstacleGenerator.reset()
     }

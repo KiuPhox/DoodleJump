@@ -18,7 +18,7 @@ export class ObjectPoolManager {
     public static holePool: ObjectPool<Hole>
     public static monsterPool: ObjectPool<Monster>
 
-    public static init(enviroment: Enviroment) {
+    public static init(enviroment: Enviroment): void {
         this.basePlatformsPool = new ObjectPool<BasePlatform>(
             () => {
                 const platform = new BasePlatform()

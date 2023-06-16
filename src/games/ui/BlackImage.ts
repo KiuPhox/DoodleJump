@@ -1,4 +1,4 @@
-import { Sprite } from '../../engine/components/Sprite'
+import { Sprite } from '../../engine/components/sprite/Sprite'
 import { GameObject } from '../../engine/system/GameObject'
 import { Tween } from '../../engine/system/tween/Tween'
 import { GameManager } from '../GameManager'

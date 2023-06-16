@@ -1,7 +1,8 @@
-import { GameObject } from '../system/GameObject'
-import { Canvas } from '../system/Canvas'
-import { Component } from './Component'
-import { ImagePreload } from '../loader/ImagePreload'
+import { GameObject } from '../../system/GameObject'
+import { Component } from '../Component'
+import { ImagePreload } from '../../loader/ImagePreload'
+import { BlendMode } from './BlendMode'
+import { SpriteManager } from './SpriteManager'
 
 export class Sprite extends Component {
     public image: HTMLImageElement
@@ -9,6 +10,7 @@ export class Sprite extends Component {
     public flipX: boolean
     public flipY: boolean
     public alpha: number
+    public blendMode: BlendMode
 
     constructor(gameObject: GameObject, _order?: number) {
         super(gameObject)
@@ -18,11 +20,12 @@ export class Sprite extends Component {
         this.flipX = false
         this.flipY = false
         this.alpha = 1
+        this.blendMode = BlendMode.NORMAL
 
-        Canvas.registerSprite(this)
+        SpriteManager.registerSprite(this)
     }
 
-    public setSprite(path: string) {
+    public setSprite(path: string): void {
         const image = ImagePreload.getImage(path)
 
         if (image === undefined) {

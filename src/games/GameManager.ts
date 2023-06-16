@@ -8,7 +8,7 @@ export class GameManager {
 
     public static OnGameStateChanged: Event<GameState>
 
-    public static init() {
+    public static init(): void {
         this.OnGameStateChanged = new Event<GameState>()
     }
 
@@ -30,12 +30,12 @@ export class GameManager {
         this.OnGameStateChanged.invoke(this.gameState)
     }
 
-    private static handleReadyState() {
+    private static handleReadyState(): void {
         const scene = SceneManager.getSceneByName('MainMenuScene')
         if (scene) SceneManager.loadScene(scene)
     }
 
-    private static handlePlayingState() {
+    private static handlePlayingState(): void {
         const scene = SceneManager.getSceneByName('GameplayScene')
         if (scene) SceneManager.loadScene(scene)
     }

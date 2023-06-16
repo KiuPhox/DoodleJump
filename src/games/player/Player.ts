@@ -1,6 +1,6 @@
 import { Collider } from '../../engine/components/Collider'
 import { ForceMode, RigidBody } from '../../engine/components/RigidBody'
-import { Sprite } from '../../engine/components/Sprite'
+import { Sprite } from '../../engine/components/sprite/Sprite'
 import { Canvas } from '../../engine/system/Canvas'
 import { GameObject } from '../../engine/system/GameObject'
 import { Vector2 } from '../../engine/utils/Vector2'

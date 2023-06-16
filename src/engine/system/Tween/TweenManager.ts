@@ -3,7 +3,7 @@ import { Tween } from './Tween'
 export class TweenManager {
     private static tweens: Tween[]
 
-    public static init() {
+    public static init(): void {
         this.tweens = []
     }
 

@@ -14,14 +14,14 @@ export class Scene {
         SceneManager.registerScene(this)
     }
 
-    public update() {
+    public update(): void {
         if (!this.active) return
         for (const gameObject of this.gameObjects) {
             gameObject.update()
         }
     }
 
-    public setActive(active: boolean) {
+    public setActive(active: boolean): void {
         this.active = active
     }
 

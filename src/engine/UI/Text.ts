@@ -1,5 +1,5 @@
-import { Canvas } from '../system/Canvas'
 import { GameObject } from '../system/GameObject'
+import { UIManager } from './UIManager'
 
 export class Text extends GameObject {
     public text: string
@@ -9,6 +9,6 @@ export class Text extends GameObject {
         super('Text')
         this.text = ''
         this.font = '28px Arial'
-        Canvas.registerText(this)
+        UIManager.registerText(this)
     }
 }

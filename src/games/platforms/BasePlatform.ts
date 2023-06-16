@@ -1,5 +1,5 @@
 import { Collider } from '../../engine/components/Collider'
-import { Sprite } from '../../engine/components/Sprite'
+import { Sprite } from '../../engine/components/sprite/Sprite'
 import { GameObject } from '../../engine/system/GameObject'
 import { Utils } from '../../engine/utils/Utils'
 import { Vector2 } from '../../engine/utils/Vector2'

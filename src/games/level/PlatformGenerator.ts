@@ -1,4 +1,4 @@
-import { Sprite } from '../../engine/components/Sprite'
+import { Sprite } from '../../engine/components/sprite/Sprite'
 import { Canvas } from '../../engine/system/Canvas'
 import { Utils } from '../../engine/utils/Utils'
 import { Vector2 } from '../../engine/utils/Vector2'
@@ -113,7 +113,7 @@ export class PlatformGenerator {
         )
     }
 
-    public static readySpawn() {
+    public static readySpawn(): void {
         this.reset()
         const firstPlatform = ObjectPoolManager.basePlatformsPool.get()
         firstPlatform.transform.position = new Vector2(-80, -200)
@@ -140,13 +140,13 @@ export class PlatformGenerator {
         this.isInitialGenerated = true
     }
 
-    public static reset() {
+    public static reset(): void {
         for (const platform of this.platforms) {
             ObjectPoolManager.releasePlatform(platform)
         }
     }
 
-    public static addPowerUp(platform: BasePlatform) {
+    public static addPowerUp(platform: BasePlatform): void {
         if (this.platforms.length > INITIAL_PLATFORMS_COUNT)
             if (Utils.RandomPercent(10)) {
                 switch (Utils.WeightPick(Level.powerUpSpawnChances)) {

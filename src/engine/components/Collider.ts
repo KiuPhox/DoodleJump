@@ -4,7 +4,7 @@ import { Event } from '../event/Event'
 import { Physic } from '../system/Physic'
 import { Component } from './Component'
 import { RigidBody } from './RigidBody'
-import { Sprite } from './Sprite'
+import { Sprite } from './sprite/Sprite'
 
 export class Collider extends Component {
     public isTrigger: boolean

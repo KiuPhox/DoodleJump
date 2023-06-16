@@ -1,4 +1,4 @@
-import { Sprite } from '../components/Sprite'
+import { Sprite } from '../components/sprite/Sprite'
 import { GameObject } from '../system/GameObject'
 import { UIManager } from './UIManager'
 
@@ -10,7 +10,7 @@ export abstract class Button extends GameObject {
         this.sprite = new Sprite(this, 0)
         this.sprite.setSprite(src)
         this.addComponent(this.sprite)
-        UIManager.add(this)
+        UIManager.registerButton(this)
     }
 
     get width(): number {

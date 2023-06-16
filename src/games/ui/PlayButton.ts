@@ -1,4 +1,4 @@
-import { Button } from '../../engine/UI/Button'
+import { Button } from '../../engine/ui/Button'
 import { Game } from '../../game'
 import { BlackImage } from './BlackImage'
 

@@ -122,10 +122,12 @@ export class GameObject {
     }
 
     public OnCollisionStay(collider: Collider): void {
+        collider
         // Implementation for the OnCollisionStay method
     }
 
     public OnTriggerStay(collider: Collider): void {
+        collider
         // Implementation for the OnTriggerStay method
     }
 

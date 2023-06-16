@@ -1,7 +1,7 @@
 import { GameManager } from './games/GameManager'
 import { Time } from './engine/system/Time'
 import { Canvas } from './engine/system/Canvas'
-import { UIManager } from './engine/UI/UIManager'
+import { UIManager } from './engine/ui/UIManager'
 import { Physic } from './engine/system/Physic'
 import { Input } from './engine/system/input/Input'
 import { Layer } from './engine/system/Layer'
@@ -13,6 +13,7 @@ import { MainMenuScene } from './games/scene/MainMenuScene'
 import { SceneManager } from './engine/system/scene/SceneManager'
 import { GameplayScene } from './games/scene/GameplayScene'
 import { GameState } from './games/GameState'
+import { SpriteManager } from './engine/components/sprite/SpriteManager'
 
 const FRAME_RATE = 300
 
@@ -42,33 +43,52 @@ export class Game {
     private static gameObjects: GameObject[] = []
 
     constructor() {
+        this.loadAssets()
+            .then(() => this.initializeGame())
+            .then(() => this.setGameReady())
+            .then(() => this.startGameLoop())
+            .catch((error) => console.error('An error occurred:', error))
+    }
+
+    private loadAssets(): Promise<void> {
         ImagePreload.init()
-
-        SoundManager.init().then(() => {
-            ImagePreload.load(PRELOAD_IMAGES).then(() => {
-                Time.init()
-                UIManager.init()
-                Canvas.init('game')
-                Input.init()
-                Layer.init()
-
-                TweenManager.init()
-
-                Layer.add('Background')
-                Physic.setInteractiveLayer('Background', 'Background', false)
-
-                GameManager.init()
-
-                SceneManager.init()
-
-                GameManager.updateGameState(GameState.READY)
-
-                new MainMenuScene()
-                new GameplayScene()
-
-                this.loop()
+        return SoundManager.init()
+            .then(() => ImagePreload.load(PRELOAD_IMAGES))
+            .then(() => {
+                console.log('Asset loaded')
             })
-        })
+    }
+
+    private initializeGame(): Promise<void> {
+        Time.init()
+        SpriteManager.init()
+        UIManager.init()
+        Canvas.init('game')
+        Input.init()
+        Layer.init()
+        TweenManager.init()
+        Layer.add('Background')
+        Physic.setInteractiveLayer('Background', 'Background', false)
+        GameManager.init()
+        SceneManager.init()
+
+        console.log('Game initialized')
+        return Promise.resolve()
+    }
+
+    private setGameReady(): Promise<void> {
+        GameManager.updateGameState(GameState.READY)
+
+        // Create game scenes
+        new MainMenuScene()
+        new GameplayScene()
+
+        console.log('Game is ready')
+        return Promise.resolve()
+    }
+
+    private startGameLoop(): void {
+        this.loop()
     }
 
     private loop() {

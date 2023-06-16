@@ -1,4 +1,4 @@
-import { Button } from '../../engine/UI/Button'
+import { Button } from '../../engine/ui/Button'
 import { GameManager } from '../GameManager'
 import { GameState } from '../GameState'
 

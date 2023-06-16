@@ -1,4 +1,4 @@
-import { Text } from '../../engine/UI/Text'
+import { Text } from '../../engine/ui/Text'
 import { GameObject } from '../../engine/system/GameObject'
 import { SceneManager } from '../../engine/system/scene/SceneManager'
 import { Vector2 } from '../../engine/utils/Vector2'
