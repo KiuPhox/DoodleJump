@@ -68,7 +68,9 @@ export class GameOverCanvas extends GameObject {
                 break
             case GameState.GAME_OVER:
                 this.setActive(true)
-                new Tween(this.transform, 1).to({ position: Vector2.zero }).setEasing(Ease.OutQuart)
+                new Tween(this.transform, 1)
+                    .to({ position: Vector2.zero })
+                    .setEasing(Ease.OUT_QUART)
                 this.scoreText.text = 'your score: ' + ScoreManager.getScore()
                 this.highScoreText.text = 'your high score: ' + ScoreManager.getHighScore()
                 break

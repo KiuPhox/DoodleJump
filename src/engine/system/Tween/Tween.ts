@@ -21,11 +21,11 @@ export class Tween {
     constructor(target: any, duration: number) {
         this.target = target
         this.duration = duration
-        this.easing = Ease.Linear
+        this.easing = Ease.LINEAR
         this.startTime = Time.time
 
         this.loopCount = 1
-        this.loopType = LoopType.Restart
+        this.loopType = LoopType.RESTART
         this.isYoyoReverse = false
 
         this.numberProperties = {}
@@ -64,7 +64,7 @@ export class Tween {
         return this
     }
 
-    public setLoops(loopCount: number, loopType: LoopType = LoopType.Restart): Tween {
+    public setLoops(loopCount: number, loopType: LoopType = LoopType.RESTART): Tween {
         this.loopCount = loopCount
         this.loopType = loopType
         return this
@@ -102,13 +102,13 @@ export class Tween {
             if (this.loopCount > 1) {
                 this.loopCount--
                 this.startTime = Time.time
-                if (this.loopType === LoopType.Yoyo) {
+                if (this.loopType === LoopType.YOYO) {
                     this.isYoyoReverse = !this.isYoyoReverse
                     this.reverseProperties()
                 }
             } else if (this.loopCount === -1) {
                 this.startTime = Time.time
-                if (this.loopType === LoopType.Yoyo) {
+                if (this.loopType === LoopType.YOYO) {
                     this.isYoyoReverse = !this.isYoyoReverse
                     this.reverseProperties()
                 }

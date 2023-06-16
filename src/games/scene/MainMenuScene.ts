@@ -54,8 +54,8 @@ export class MainMenuScene extends Scene {
         // Bounce the title infinte
         new Tween(this.title.transform, 1)
             .to({ position: Vector2.zero })
-            .setLoops(-1, LoopType.Yoyo)
-            .setEasing(Ease.OutBounce)
+            .setLoops(-1, LoopType.YOYO)
+            .setEasing(Ease.OUT_BOUNCE)
 
         GameManager.OnGameStateChanged.subscribe(this.OnGameStateChanged)
     }
