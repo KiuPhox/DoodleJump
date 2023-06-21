@@ -45,10 +45,15 @@ export class MainMenuScene extends Scene {
         blackImage.dontDestroyOnLoad = true
 
         this.registerGameObject(player)
+
         this.registerGameObject(this.playButton)
+
         this.registerGameObject(this.title)
+
         this.registerGameObject(platform)
+
         this.registerGameObject(background)
+
         this.registerGameObject(blackImage)
 
         // Bounce the title infinte

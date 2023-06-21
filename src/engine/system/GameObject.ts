@@ -55,23 +55,6 @@ export class GameObject {
         return this.components[name]
     }
 
-    public executeStart(): void {
-        this.start()
-        for (const child of this.children) {
-            child.executeStart()
-        }
-    }
-
-    public executeUpdate(): void {
-        if (!this.isActive) {
-            return
-        }
-        this.update()
-        for (const child of this.children) {
-            child.executeUpdate()
-        }
-    }
-
     public setChild(childNode: GameObject): void {
         if (this.children.includes(childNode)) {
             return

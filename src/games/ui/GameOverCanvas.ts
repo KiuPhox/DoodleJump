@@ -9,6 +9,8 @@ import { GameState } from '../GameState'
 import { PlayButton } from './PlayButton'
 import { ReturnMenuButton } from './ReturnMenuButton'
 import { ScoreManager } from './ScoreManager'
+import { Sprite } from '../../engine/components/sprite/Sprite'
+import { Canvas } from '../../engine/system/Canvas'
 
 const INITIAL_POSITION = new Vector2(0, -500)
 
@@ -18,6 +20,7 @@ export class GameOverCanvas extends GameObject {
 
     private scoreText: Text
     private highScoreText: Text
+    private footer: GameObject
 
     constructor() {
         super('GameOverCanvas')
@@ -27,22 +30,32 @@ export class GameOverCanvas extends GameObject {
         this.playButton = new PlayButton()
         this.returnMenuButton = new ReturnMenuButton()
 
-        this.playButton.transform.position = new Vector2(30, -120)
-        this.returnMenuButton.transform.position = new Vector2(100, -170)
+        this.playButton.transform.position = new Vector2(30, -80)
+        this.returnMenuButton.transform.position = new Vector2(100, -130)
 
         this.scoreText = new Text()
         this.highScoreText = new Text()
 
-        this.scoreText.transform.position = new Vector2(-100, 30)
-        this.highScoreText.transform.position = new Vector2(-125, -10)
+        this.scoreText.transform.position = new Vector2(-100, 40)
+        this.highScoreText.transform.position = new Vector2(-125, 0)
 
         this.scoreText.font = '600 30px DoodleJump'
         this.highScoreText.font = '600 30px DoodleJump'
+
+        this.footer = new GameObject('Footer')
+        const footerSprite = new Sprite(this.footer, 0)
+        footerSprite.setSprite('assets/images/footer.png')
+        this.footer.addComponent(footerSprite)
+        this.footer.transform.position = new Vector2(
+            0,
+            -Canvas.size.y / 2 + footerSprite.height / 2
+        )
 
         this.playButton.setParent(this)
         this.returnMenuButton.setParent(this)
         this.scoreText.setParent(this)
         this.highScoreText.setParent(this)
+        this.footer.setParent(this)
 
         this.transform.position = INITIAL_POSITION
 
@@ -55,6 +68,7 @@ export class GameOverCanvas extends GameObject {
         this.returnMenuButton.setActive(value)
         this.scoreText.setActive(value)
         this.highScoreText.setActive(value)
+        this.footer.setActive(value)
     }
 
     OnGameStateChanged = (gameState: GameState) => {

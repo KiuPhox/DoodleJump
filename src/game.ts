@@ -43,20 +43,18 @@ export class Game {
     private static gameObjects: GameObject[] = []
 
     constructor() {
+        this.initializeGame()
         this.loadAssets()
-            .then(() => this.initializeGame())
             .then(() => this.setGameReady())
             .then(() => this.startGameLoop())
             .catch((error) => console.error('An error occurred:', error))
     }
 
-    private loadAssets(): Promise<void> {
+    private async loadAssets(): Promise<void> {
         ImagePreload.init()
-        return SoundManager.init()
-            .then(() => ImagePreload.load(PRELOAD_IMAGES))
-            .then(() => {
-                console.log('Asset loaded')
-            })
+        await SoundManager.init()
+        await ImagePreload.load(PRELOAD_IMAGES)
+        console.log('Asset loaded')
     }
 
     private initializeGame(): Promise<void> {
@@ -67,8 +65,6 @@ export class Game {
         Input.init()
         Layer.init()
         TweenManager.init()
-        Layer.add('Background')
-        Physic.setInteractiveLayer('Background', 'Background', false)
         GameManager.init()
         SceneManager.init()
 
@@ -77,11 +73,14 @@ export class Game {
     }
 
     private setGameReady(): Promise<void> {
-        GameManager.updateGameState(GameState.READY)
+        Layer.add('Background')
+        Physic.setInteractiveLayer('Background', 'Background', false)
 
         // Create game scenes
         new MainMenuScene()
         new GameplayScene()
+
+        GameManager.updateGameState(GameState.READY)
 
         console.log('Game is ready')
         return Promise.resolve()

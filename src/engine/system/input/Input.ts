@@ -7,12 +7,18 @@ export class Input {
     private static heldKeyStates: Set<string> = new Set<string>()
     private static isHeld: boolean
     private static isMouseDown: boolean
+    public static acceleration: Vector2
 
     private static touch: Touch
     public static isTouching: boolean
 
     public static init(): void {
         const canvas = Canvas.canvas
+
+        this.acceleration = Vector2.zero
+        this.touch = new Touch()
+        this.isTouching = false
+        this.isHeld = false
 
         document.addEventListener('keydown', (event: KeyboardEvent) => this.handleKeyDown(event))
         document.addEventListener('keyup', (event: KeyboardEvent) => this.handleKeyUp(event))
@@ -21,9 +27,11 @@ export class Input {
         canvas.addEventListener('touchstart', this.handleTouchStart)
         canvas.addEventListener('touchend', this.handleTouchEnd)
 
-        this.touch = new Touch()
-        this.isTouching = false
-        this.isHeld = false
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', this.handleOrientation)
+        } else {
+            console.log('DeviceOrientationEvent is not supported in this browser.')
+        }
     }
 
     public static getKeyDown(keyCode: string): boolean {
@@ -36,6 +44,10 @@ export class Input {
 
     public static getMouseDown(): boolean {
         return this.isMouseDown
+    }
+
+    public static getTouch(): Touch {
+        return this.touch
     }
 
     public static handleKeyDown(event: KeyboardEvent): void {
@@ -80,12 +92,20 @@ export class Input {
         Input.isTouching = false
     }
 
-    public static getTouch(): Touch {
-        return this.touch
-    }
-
     public static reset() {
         this.previousKeyStates.clear()
         this.isMouseDown = false
+    }
+
+    private static handleOrientation(event: DeviceOrientationEvent): void {
+        const { gamma, beta } = event
+
+        // Convert the gamma, beta, and alpha values to acceleration values (-1 to 1)
+        const accelerationX = gamma ? gamma / 90 : 0
+        const accelerationY = beta ? beta / 90 : 0
+        //const accelerationZ = alpha ? alpha / 90 : 0
+
+        // Update the acceleration values
+        this.acceleration = new Vector2(accelerationX, accelerationY)
     }
 }

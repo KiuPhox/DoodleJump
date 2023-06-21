@@ -68,8 +68,9 @@ export class PlatformGenerator {
 
         // If the previous platform is brown, then the chance of spawn brown platform is 0
         if (this.previousPlatformGenerated instanceof BrownPlatform) {
-            platformTypeChances[2] = 0
+            platformTypeChances[1] = 0
         }
+
         const platformTypeIndex = Utils.WeightPick(platformTypeChances)
         // Choose platform type to spawn
         switch (platformTypeIndex) {

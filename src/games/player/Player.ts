@@ -139,7 +139,7 @@ export class Player extends GameObject {
             if (playerBottom < platformTop) return
 
             if (collider.gameObject.name == 'BrownPlatform') {
-                ;(collider.gameObject as BrownPlatform).setIsBreaking(true)
+                (collider.gameObject as BrownPlatform).setIsBreaking(true)
             } else {
                 this.jump(JUMP_FORCE)
 
@@ -157,7 +157,7 @@ export class Player extends GameObject {
             this.isFalling &&
             !this.isMonsterTouched
         ) {
-            ;(collider.gameObject as Spring).activeSpring()
+            (collider.gameObject as Spring).activeSpring()
 
             this.jump(SPRING_FORCE)
             SoundManager.playSpringSound()
